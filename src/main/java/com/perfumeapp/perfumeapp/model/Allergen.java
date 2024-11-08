@@ -10,9 +10,10 @@ public class Allergen {
 
     private String name;
 
-    // Optional: Add concentration limits or other relevant fields
+    private double concentrationLimit;
 
     // Getters and setters
+
     public Long getId() {
         return id;
     }
@@ -27,5 +28,13 @@ public class Allergen {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public double getConcentrationLimit() {
+        return concentrationLimit;
+    }
+
+    public void setConcentrationLimit(double concentrationLimit) {
+        this.concentrationLimit = concentrationLimit;
     }
 }

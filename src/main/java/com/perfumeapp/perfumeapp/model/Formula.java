@@ -12,7 +12,7 @@ public class Formula {
 
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "formula", orphanRemoval = true)
     private List<FormulaIngredient> formulaIngredients = new ArrayList<>();
 
     // Getters and setters

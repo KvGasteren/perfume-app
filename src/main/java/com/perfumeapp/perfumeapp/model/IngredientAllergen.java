@@ -9,6 +9,11 @@ public class IngredientAllergen {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "ingredient_id", nullable = false)
+    private Ingredient ingredient;
+
+    @ManyToOne
+    @JoinColumn(name = "allergen_id", nullable = false)
     private Allergen allergen;
 
     private double concentration;  // Concentration of this allergen in the ingredient
@@ -21,6 +26,14 @@ public class IngredientAllergen {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Ingredient getIngredient() {
+        return ingredient;
+    }
+
+    public void setIngredient(Ingredient ingredient) {
+        this.ingredient = ingredient;
     }
 
     public Allergen getAllergen() {

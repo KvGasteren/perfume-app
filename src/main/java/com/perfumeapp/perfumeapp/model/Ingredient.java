@@ -1,7 +1,6 @@
 package com.perfumeapp.perfumeapp.model;
 
 import jakarta.persistence.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +12,7 @@ public class Ingredient {
 
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "ingredient", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<IngredientAllergen> ingredientAllergens = new ArrayList<>();
 
     // Getters and setters

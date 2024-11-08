@@ -8,7 +8,12 @@ public class FormulaIngredient {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "ingredient_id", nullable = false)
     private Ingredient ingredient;
+
+    @ManyToOne
+    @JoinColumn(name = "formula_id", nullable = false)
+    private Formula formula;
 
     private double amount;  // Amount of this ingredient in the formula
 
@@ -28,6 +33,14 @@ public class FormulaIngredient {
 
     public void setIngredient(Ingredient ingredient) {
         this.ingredient = ingredient;
+    }
+
+    public Formula getFormula() {
+        return formula;
+    }
+
+    public void setFormula(Formula formula) {
+        this.formula = formula;
     }
 
     public double getAmount() {
