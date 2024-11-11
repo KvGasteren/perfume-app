@@ -1,6 +1,7 @@
 
 package com.perfumeapp.perfumeapp.controller;
 
+import com.perfumeapp.perfumeapp.model.Ingredient;
 import com.perfumeapp.perfumeapp.model.IngredientAllergen;
 import com.perfumeapp.perfumeapp.service.IngredientAllergenService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,21 +21,21 @@ public class IngredientAllergenController {
 
     // Add an allergen to an ingredient
     @PostMapping
-    public ResponseEntity<IngredientAllergen> addAllergenToIngredient(
+    public ResponseEntity<Ingredient> addAllergenToIngredient(
             @PathVariable Long ingredientId,
             @RequestBody IngredientAllergen allergenData) {
-        IngredientAllergen savedAllergen = ingredientAllergenService.addAllergenToIngredient(ingredientId, allergenData);
-        return savedAllergen != null ? ResponseEntity.status(HttpStatus.CREATED).body(savedAllergen)
+        Ingredient savedIngredient = ingredientAllergenService.addAllergenToIngredient(ingredientId, allergenData);
+        return savedIngredient != null ? ResponseEntity.status(HttpStatus.CREATED).body(savedIngredient)
                 : ResponseEntity.notFound().build();
     }
 
     // Update an allergen's concentration within an ingredient
     @PutMapping("/{allergenId}")
-    public ResponseEntity<IngredientAllergen> updateAllergenInIngredient(
+    public ResponseEntity<Ingredient> updateAllergenInIngredient(
             @PathVariable Long ingredientId,
             @PathVariable Long allergenId,
             @RequestBody double newConcentration) {
-        IngredientAllergen updatedAllergen = ingredientAllergenService.updateAllergenInIngredient(ingredientId, allergenId, newConcentration);
+        Ingredient updatedAllergen = ingredientAllergenService.updateAllergenInIngredient(ingredientId, allergenId, newConcentration);
         return updatedAllergen != null ? ResponseEntity.ok(updatedAllergen) : ResponseEntity.notFound().build();
     }
 

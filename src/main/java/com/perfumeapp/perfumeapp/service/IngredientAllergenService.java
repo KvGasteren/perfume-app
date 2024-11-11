@@ -18,7 +18,7 @@ public class IngredientAllergenService {
     @Autowired
     private AllergenRepository allergenRepository;
 
-    public IngredientAllergen addAllergenToIngredient(Long ingredientId, IngredientAllergen allergenData) {
+    public Ingredient addAllergenToIngredient(Long ingredientId, IngredientAllergen allergenData) {
         Ingredient ingredient = ingredientRepository.findById(ingredientId).orElse(null);
         if (ingredient == null) return null;
 
@@ -29,10 +29,10 @@ public class IngredientAllergenService {
         allergenData.setAllergen(allergen);
         ingredient.getIngredientAllergens().add(allergenData);
         ingredientRepository.save(ingredient);
-        return allergenData;
+        return ingredient;
     }
 
-    public IngredientAllergen updateAllergenInIngredient(Long ingredientId, Long allergenId, double newConcentration) {
+    public Ingredient updateAllergenInIngredient(Long ingredientId, Long allergenId, double newConcentration) {
         Ingredient ingredient = ingredientRepository.findById(ingredientId).orElse(null);
         if (ingredient == null) return null;
 
@@ -40,7 +40,7 @@ public class IngredientAllergenService {
             if (ia.getAllergen().getId().equals(allergenId)) {
                 ia.setConcentration(newConcentration);
                 ingredientRepository.save(ingredient);
-                return ia;
+                return ingredient;
             }
         }
         return null;

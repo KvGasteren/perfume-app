@@ -45,7 +45,8 @@ public class AllergenControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(allergen)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.name").value("TestAllergen"));
+                .andExpect(jsonPath("$.name").value("TestAllergen"))
+                .andExpect(jsonPath("$.id").value(1L));
     }
 
     @Test
@@ -60,4 +61,5 @@ public class AllergenControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("TestAllergen"));
     }
+
 }

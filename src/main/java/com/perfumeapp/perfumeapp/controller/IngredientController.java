@@ -18,7 +18,8 @@ public class IngredientController {
     private IngredientService ingredientService;
 
     @PostMapping
-    public ResponseEntity<Ingredient> createIngredient(@RequestBody Ingredient ingredient) {
+    public ResponseEntity<Ingredient> createIngredient(
+            @RequestBody Ingredient ingredient) {
         Ingredient createdIngredient = ingredientService.createIngredient(ingredient);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdIngredient);
     }
@@ -42,7 +43,8 @@ public class IngredientController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteIngredient(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteIngredient(
+            @PathVariable Long id) {
         ingredientService.deleteIngredient(id);
         return ResponseEntity.noContent().build();
     }
