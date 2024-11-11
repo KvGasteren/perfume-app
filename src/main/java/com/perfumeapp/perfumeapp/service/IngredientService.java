@@ -27,8 +27,12 @@ public class IngredientService {
     public Ingredient updateIngredient(Long id, Ingredient updatedIngredient) {
         Ingredient ingredient = getIngredient(id);
         if (ingredient != null) {
-            ingredient.setName(updatedIngredient.getName());
-            ingredient.setIngredientAllergens(updatedIngredient.getIngredientAllergens());
+            if (updatedIngredient.getName() != null) {
+                ingredient.setName(updatedIngredient.getName());
+            }
+//            if (updatedIngredient.getIngredientAllergens() != null) {
+//                ingredient.setIngredientAllergens(updatedIngredient.getIngredientAllergens());
+//            }
             return ingredientRepository.save(ingredient);
         }
         return null;
