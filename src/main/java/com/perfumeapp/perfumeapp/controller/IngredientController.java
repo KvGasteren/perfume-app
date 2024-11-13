@@ -25,7 +25,7 @@ public class IngredientController {
     }
 
     @GetMapping("/{ingredientId}")
-    public ResponseEntity<Ingredient> getIngredient(@RequestParam Long ingredientId) {
+    public ResponseEntity<Ingredient> getIngredient(@PathVariable Long ingredientId) {
         return ingredientService.getIngredientById(ingredientId)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
