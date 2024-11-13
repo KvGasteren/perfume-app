@@ -1,18 +1,17 @@
 package com.perfumeapp.perfumeapp.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 @Entity
 public class Allergen {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String name;
-
-    private double concentrationLimit;
-
-    // Getters and setters
+    private Double maxConcentration;
 
     public Long getId() {
         return id;
@@ -30,11 +29,20 @@ public class Allergen {
         this.name = name;
     }
 
-    public double getConcentrationLimit() {
-        return concentrationLimit;
+    public Double getMaxConcentration() {
+        return maxConcentration;
     }
 
-    public void setConcentrationLimit(double concentrationLimit) {
-        this.concentrationLimit = concentrationLimit;
+    public void setMaxConcentration(Double maxConcentration) {
+        this.maxConcentration = maxConcentration;
+    }
+
+    @Override
+    public String toString() {
+        return "Allergen{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", maxConcentration=" + maxConcentration +
+                '}';
     }
 }

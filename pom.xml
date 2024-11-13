@@ -12,7 +12,7 @@
 	<artifactId>perfumeapp</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>perfumeapp</name>
-	<description>App to calculate allergen composition in a formula</description>
+	<description>get allergen information from formula</description>
 	<url/>
 	<licenses>
 		<license/>
