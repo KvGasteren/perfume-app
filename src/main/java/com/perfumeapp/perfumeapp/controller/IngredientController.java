@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/ingredients")
@@ -38,6 +39,18 @@ public class IngredientController {
                 .map(ingredient -> ResponseEntity.ok(
                         ingredientService.updateIngredient(ingredientId, ingredientDetails))
                 ).orElse(ResponseEntity.notFound().build());
+    }
+
+    @PutMapping("/{ingredientId}/add-allergens")
+    public ResponseEntity<Ingredient> addAllergensToIngredient(
+            @PathVariable Long ingredientId, @RequestBody Set<Long> allergenIds) {
+
+        try {
+            Ingredient updatedIngredient = ingredientService.addAllergensToIngredient(ingredientId, allergenIds);
+            return ResponseEntity.ok(updatedIngredient);
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @DeleteMapping("/{ingredientId}")
