@@ -42,4 +42,10 @@ public class AllergenController {
                 ).orElse(ResponseEntity.notFound().build());
     }
 
+    @DeleteMapping("/{allergenId}")
+    public ResponseEntity<Void> deleteAllergen(@PathVariable Long allergenId) {
+        allergenService.deleteAllergen(allergenId);
+        return ResponseEntity.noContent().build();
+    }
+
 }
