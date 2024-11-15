@@ -7,6 +7,7 @@ public class IngredientDTO {
     private Long id;
     private String name;
     private List<AllergenDTO> allergens = new ArrayList<>();
+    private double concentration; // specific to this Formula
 
     public Long getId() {
         return id;
