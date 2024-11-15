@@ -1,6 +1,7 @@
 package com.perfumeapp.perfumeapp.controller;
 
 import com.perfumeapp.perfumeapp.model.Ingredient;
+import com.perfumeapp.perfumeapp.model.IngredientAllergen;
 import com.perfumeapp.perfumeapp.service.IngredientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -41,16 +42,15 @@ public class IngredientController {
                 ).orElse(ResponseEntity.notFound().build());
     }
 
-    @PutMapping("/{ingredientId}/add-allergens")
-    public ResponseEntity<Ingredient> addAllergensToIngredient(
-            @PathVariable Long ingredientId, @RequestBody Set<Long> allergenIds) {
-
-        try {
-            Ingredient updatedIngredient = ingredientService.addAllergensToIngredient(ingredientId, allergenIds);
-            return ResponseEntity.ok(updatedIngredient);
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
+    @PutMapping("/{ingredientId}/add-allergen")
+    public ResponseEntity<IngredientAllergen> addAllergenToIngredient(
+            @PathVariable Long ingredientId,
+            @RequestParam Long allergenId,
+            @RequestParam double concentration) {
+        IngredientAllergen ingredientAllergen = ingredientService.addAllergenToIngredient(
+                ingredientId, allergenId, concentration
+        );
+        return ResponseEntity.ok(ingredientAllergen);
     }
 
     @DeleteMapping("/{ingredientId}")

@@ -1,6 +1,7 @@
 package com.perfumeapp.perfumeapp.controller;
 
 import com.perfumeapp.perfumeapp.model.Formula;
+import com.perfumeapp.perfumeapp.model.FormulaIngredient;
 import com.perfumeapp.perfumeapp.service.FormulaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -55,15 +56,14 @@ public class FormulaController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/{formulaId}/add-ingredients")
-    public ResponseEntity<Formula> addIngredientsToFormula(
-            @PathVariable Long formulaId, @RequestBody Set<Long> ingredientIds) {
-        try {
-            Formula updatedFormula = formulaService.addIngredientsToFormula(formulaId, ingredientIds);
-            return ResponseEntity.ok(updatedFormula);
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
+    @PutMapping("/{formulaId}/add-ingredient")
+    public ResponseEntity<FormulaIngredient> addIngredientToFormula(
+            @PathVariable Long formulaId,
+            @RequestParam Long ingredientId,
+            @RequestParam double concentration) {
+        FormulaIngredient formulaIngredient = formulaService.addIngredientToFormula(
+                formulaId, ingredientId, concentration);
+        return ResponseEntity.ok(formulaIngredient);
     }
 
 }
