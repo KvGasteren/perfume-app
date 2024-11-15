@@ -2,7 +2,9 @@ package com.perfumeapp.perfumeapp.service;
 
 import com.perfumeapp.perfumeapp.model.Allergen;
 import com.perfumeapp.perfumeapp.model.Ingredient;
+import com.perfumeapp.perfumeapp.model.IngredientAllergen;
 import com.perfumeapp.perfumeapp.repository.AllergenRepository;
+import com.perfumeapp.perfumeapp.repository.IngredientAllergenRepository;
 import com.perfumeapp.perfumeapp.repository.IngredientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,9 @@ public class IngredientService {
 
     @Autowired
     private AllergenRepository allergenRepository;
+
+    @Autowired
+    private IngredientAllergenRepository ingredientAllergenRepository;
 
     public Ingredient createIngredient(Ingredient ingredient) {
         return ingredientRepository.save(ingredient);
@@ -46,23 +51,17 @@ public class IngredientService {
         ingredientRepository.deleteById(id);
     }
 
-    // Method to create or update ingredient and add allergens
-    public Ingredient addAllergensToIngredient(Long ingredientId, Set<Long> allergenIds) {
+    public IngredientAllergen addAllergenToIngredient(Long ingredientId, Long allergenId, double concentration) {
         Ingredient ingredient = ingredientRepository.findById(ingredientId)
                 .orElseThrow(() -> new RuntimeException("Ingredient not found"));
+        Allergen allergen = allergenRepository.findById(allergenId)
+                .orElseThrow(() -> new RuntimeException("Allergen not found"));
 
-        // Fetch allergens based on the provided allergenIds
-        Set<Allergen> allergens = new HashSet<>();
-        for (Long allergenId : allergenIds) {
-            Allergen allergen = allergenRepository.findById(allergenId)
-                    .orElseThrow(() -> new RuntimeException("Allergen not found"));
-            allergens.add(allergen);
-        }
+        IngredientAllergen ingredientAllergen = new IngredientAllergen();
+        ingredientAllergen.setIngredient(ingredient);
+        ingredientAllergen.setAllergen(allergen);
+        ingredientAllergen.setConcentration(concentration);
 
-        // Add allergens to the ingredient
-        ingredient.setAllergens(allergens);
-
-        // Save the updated ingredient
-        return ingredientRepository.save(ingredient);
+        return ingredientAllergenRepository.save(ingredientAllergen);
     }
 }

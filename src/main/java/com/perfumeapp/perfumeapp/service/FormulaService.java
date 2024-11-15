@@ -2,7 +2,9 @@ package com.perfumeapp.perfumeapp.service;
 
 import com.perfumeapp.perfumeapp.model.Allergen;
 import com.perfumeapp.perfumeapp.model.Formula;
+import com.perfumeapp.perfumeapp.model.FormulaIngredient;
 import com.perfumeapp.perfumeapp.model.Ingredient;
+import com.perfumeapp.perfumeapp.repository.FormulaIngredientRepository;
 import com.perfumeapp.perfumeapp.repository.FormulaRepository;
 import com.perfumeapp.perfumeapp.repository.IngredientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,8 @@ public class FormulaService {
     private FormulaRepository formulaRepository;
     @Autowired
     private IngredientRepository ingredientRepository;
+    @Autowired
+    private FormulaIngredientRepository formulaIngredientRepository;
 
     public Formula createFormula(Formula formula) {
         return formulaRepository.save(formula);
@@ -45,23 +49,18 @@ public class FormulaService {
         formulaRepository.deleteById(id);
     }
 
-    // Method to create or update formula and add ingredients
-    public Formula addIngredientsToFormula(Long formulaId, Set<Long> ingredientIds) {
+    public FormulaIngredient addIngredientToFormula(Long formulaId, Long ingredientId, double concentration) {
         Formula formula = formulaRepository.findById(formulaId)
                 .orElseThrow(() -> new RuntimeException("Formula not found"));
+        Ingredient ingredient = ingredientRepository.findById(ingredientId)
+                .orElseThrow(() -> new RuntimeException("Ingredient not found"));
 
-        // Fetch ingredients based on the provided ingredientIds
-        Set<Ingredient> ingredients = new HashSet<>();
-        for (Long ingredientId : ingredientIds) {
-            Ingredient ingredient = ingredientRepository.findById(ingredientId)
-                    .orElseThrow(() -> new RuntimeException("Ingredient not found"));
-            ingredients.add(ingredient);
-        }
+        FormulaIngredient formulaIngredient = new FormulaIngredient();
+        formulaIngredient.setFormula(formula);
+        formulaIngredient.setIngredient(ingredient);
+        formulaIngredient.setConcentration(concentration);
 
-        // Add allergens to the ingredient
-        formula.setIngredients(ingredients);
-
-        // Save the updated ingredient
-        return formulaRepository.save(formula);
+        return formulaIngredientRepository.save(formulaIngredient);
     }
+
 }
