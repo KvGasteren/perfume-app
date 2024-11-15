@@ -1,9 +1,9 @@
 package com.perfumeapp.perfumeapp.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Formula {
@@ -11,6 +11,14 @@ public class Formula {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+
+    @ManyToMany
+    @JoinTable(
+        name = "formula_ingredient",
+            joinColumns = @JoinColumn(name="formula_id"),
+            inverseJoinColumns = @JoinColumn(name="ingredient_id")
+    )
+    private Set<Ingredient> ingredients = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -26,5 +34,13 @@ public class Formula {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Set<Ingredient> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(Set<Ingredient> ingredients) {
+        this.ingredients = ingredients;
     }
 }

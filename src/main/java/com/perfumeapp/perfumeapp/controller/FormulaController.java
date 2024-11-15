@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/formulas")
@@ -53,4 +54,16 @@ public class FormulaController {
         formulaService.deleteFormula(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping("/{formulaId}/add-ingredients")
+    public ResponseEntity<Formula> addIngredientsToFormula(
+            @PathVariable Long formulaId, @RequestBody Set<Long> ingredientIds) {
+        try {
+            Formula updatedFormula = formulaService.addIngredientsToFormula(formulaId, ingredientIds);
+            return ResponseEntity.ok(updatedFormula);
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }
