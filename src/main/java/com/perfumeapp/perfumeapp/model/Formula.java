@@ -12,13 +12,8 @@ public class Formula {
     private Long id;
     private String name;
 
-    @ManyToMany
-    @JoinTable(
-        name = "formula_ingredient",
-            joinColumns = @JoinColumn(name="formula_id"),
-            inverseJoinColumns = @JoinColumn(name="ingredient_id")
-    )
-    private Set<Ingredient> ingredients = new HashSet<>();
+    @OneToMany(mappedBy = "formula", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<FormulaIngredient> formulaIngredients = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -36,11 +31,11 @@ public class Formula {
         this.name = name;
     }
 
-    public Set<Ingredient> getIngredients() {
-        return ingredients;
+    public Set<FormulaIngredient> getFormulaIngredients() {
+        return formulaIngredients;
     }
 
-    public void setIngredients(Set<Ingredient> ingredients) {
-        this.ingredients = ingredients;
+    public void setFormulaIngredients(Set<FormulaIngredient> formulaIngredients) {
+        this.formulaIngredients = formulaIngredients;
     }
 }

@@ -13,13 +13,8 @@ public class Ingredient {
 
     private String name;
 
-    @ManyToMany
-    @JoinTable(
-            name = "ingredient_allergen",
-            joinColumns = @JoinColumn(name = "ingredient_id"),
-            inverseJoinColumns = @JoinColumn(name = "allergen_id")
-    )
-    private Set<Allergen> allergens = new HashSet<>();
+    @OneToMany(mappedBy = "ingredient", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<IngredientAllergen> ingredientAllergens;
 
     public Long getId() {
         return id;
@@ -37,11 +32,11 @@ public class Ingredient {
         this.name = name;
     }
 
-    public Set<Allergen> getAllergens() {
-        return allergens;
+    public Set<IngredientAllergen> getIngredientAllergens() {
+        return ingredientAllergens;
     }
 
-    public void setAllergens(Set<Allergen> allergens) {
-        this.allergens = allergens;
+    public void setIngredientAllergens(Set<IngredientAllergen> ingredientAllergens) {
+        this.ingredientAllergens = ingredientAllergens;
     }
 }
