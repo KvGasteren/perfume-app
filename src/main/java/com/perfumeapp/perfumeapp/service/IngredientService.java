@@ -11,10 +11,7 @@ import com.perfumeapp.perfumeapp.repository.IngredientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -48,6 +45,13 @@ public class IngredientService {
 
         return convertToDTO(ingredient);
     }
+    public IngredientDTO updateIngredientName(Long id, IngredientDTO ingredientDTO) {
+        Ingredient ingredient = ingredientRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Ingredient not found"));
+        ingredient.setName(ingredientDTO.getName());
+        ingredientRepository.save(ingredient);
+        return convertToDTO(ingredient);
+    }
 
     public IngredientDTO updateAllergenConcentration(Long ingredientId, Long allergenId, double concentration) {
         Ingredient ingredient = ingredientRepository.findById(ingredientId)
@@ -79,7 +83,10 @@ public class IngredientService {
         dto.setId(ingredient.getId());
         dto.setName(ingredient.getName());
 
-        List<AllergenDTO> allergens = ingredient.getIngredientAllergens().stream()
+
+        List<AllergenDTO> allergens = (ingredient.getIngredientAllergens() == null)
+            ? new ArrayList<>()
+            : ingredient.getIngredientAllergens().stream()
                 .map(ia -> {
                     AllergenDTO allergenDTO = new AllergenDTO();
                     allergenDTO.setId(ia.getAllergen().getId());
@@ -90,5 +97,23 @@ public class IngredientService {
 
         dto.setAllergens(allergens);
         return dto;
+    }
+
+    public List<IngredientDTO> getAllIngredients() {
+        return ingredientRepository.findAll().stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public IngredientDTO getIngredientById(Long id) {
+        Ingredient i = ingredientRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Ingredient not found"));
+        return convertToDTO(i);
+    }
+
+    public void removeIngredient(Long id) {
+        Ingredient ingredient = ingredientRepository.findById(id)
+                        .orElseThrow(() -> new RuntimeException("Ingredient not found"));
+        ingredientRepository.delete(ingredient);
     }
 }

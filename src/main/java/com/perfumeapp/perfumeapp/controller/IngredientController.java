@@ -27,6 +27,12 @@ public class IngredientController {
         return ResponseEntity.ok(ingredientService.addAllergen(ingredientId, allergenDTO));
     }
 
+    @PutMapping("/{ingredientId}")
+    public ResponseEntity<IngredientDTO> updateIngredientName(
+            @PathVariable Long ingredientId, @RequestBody IngredientDTO ingredientDTO) {
+        return ResponseEntity.ok(ingredientService.updateIngredientName(ingredientId, ingredientDTO));
+    }
+
     @PutMapping("/{ingredientId}/allergens/{allergenId}")
     public ResponseEntity<IngredientDTO> updateAllergenConcentration(
             @PathVariable Long ingredientId, @PathVariable Long allergenId, @RequestBody double concentration) {
@@ -37,6 +43,23 @@ public class IngredientController {
     public ResponseEntity<IngredientDTO> removeAllergen(
             @PathVariable Long ingredientId, @PathVariable Long allergenId) {
         return ResponseEntity.ok(ingredientService.removeAllergen(ingredientId, allergenId));
+    }
+
+    @DeleteMapping("/{ingredientId}")
+    public ResponseEntity<Void> removeIngredient(@PathVariable Long ingredientId) {
+        ingredientService.removeIngredient(ingredientId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping
+    public ResponseEntity<List<IngredientDTO>> getAllIngredients() {
+        return ResponseEntity.ok(ingredientService.getAllIngredients());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<IngredientDTO> getIngredientById(@PathVariable Long id) {
+        IngredientDTO ingredient = ingredientService.getIngredientById(id);
+        return ResponseEntity.ok(ingredient);
     }
 }
 

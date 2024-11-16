@@ -21,7 +21,7 @@ public class AllergenController {
     }
 
     @GetMapping("/{allergenId}")
-    public ResponseEntity<Allergen> getAllergen(@RequestParam Long allergenId) {
+    public ResponseEntity<Allergen> getAllergen(@PathVariable Long allergenId) {
         return allergenService.getAllergenById(allergenId)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
