@@ -4,6 +4,7 @@ public class AllergenDTO {
 
     private Long id;
     private String name;
+    private double maxConcentration;
     private double concentration; // specific to this Ingredient
 
     public Long getId() {
@@ -20,6 +21,14 @@ public class AllergenDTO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public double getMaxConcentration() {
+        return maxConcentration;
+    }
+
+    public void setMaxConcentration(double maxConcentration) {
+        this.maxConcentration = maxConcentration;
     }
 
     public double getConcentration() {

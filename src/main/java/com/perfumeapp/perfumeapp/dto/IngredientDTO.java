@@ -32,4 +32,12 @@ public class IngredientDTO {
     public void setAllergens(List<AllergenDTO> allergens) {
         this.allergens = allergens;
     }
+
+    public double getConcentration() {
+        return concentration;
+    }
+
+    public void setConcentration(double concentration) {
+        this.concentration = concentration;
+    }
 }

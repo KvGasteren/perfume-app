@@ -1,8 +1,10 @@
 package com.perfumeapp.perfumeapp.controller;
 
+import com.perfumeapp.perfumeapp.dto.AllergenDTO;
 import com.perfumeapp.perfumeapp.model.Allergen;
 import com.perfumeapp.perfumeapp.repository.AllergenRepository;
 import com.perfumeapp.perfumeapp.service.AllergenService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,30 +18,25 @@ public class AllergenController {
     private AllergenService allergenService;
 
     @GetMapping()
-    public List<Allergen> getAllAllergens() {
-        return  allergenService.getAllAllergens();
+    public List<AllergenDTO> getAllAllergens() {
+        return allergenService.getAllAllergens();
     }
 
     @GetMapping("/{allergenId}")
-    public ResponseEntity<Allergen> getAllergen(@PathVariable Long allergenId) {
-        return allergenService.getAllergenById(allergenId)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<AllergenDTO> getAllergen(@PathVariable Long allergenId) {
+        return ResponseEntity.ok(allergenService.getAllergenById(allergenId));
     }
 
     @PostMapping()
-    public Allergen createAllergen(@RequestBody Allergen allergen) {
-        return allergenService.createAllergen(allergen);
+    public ResponseEntity<AllergenDTO> createAllergen(@RequestBody AllergenDTO allergen) {
+        return ResponseEntity.ok(allergenService.createAllergen(allergen));
     }
 
     @PutMapping("/{allergenId}")
-    public ResponseEntity<Allergen> updateAllergen(
+    public ResponseEntity<AllergenDTO> updateAllergen(
             @PathVariable Long allergenId,
-            @RequestBody Allergen allergenDetails) {
-        return allergenService.getAllergenById(allergenId)
-                .map(allergen -> ResponseEntity.ok(
-                        allergenService.updateAllergen(allergenId, allergenDetails))
-                ).orElse(ResponseEntity.notFound().build());
+            @RequestBody AllergenDTO allergenDetails) {
+        return ResponseEntity.ok(allergenService.updateAllergen(allergenId, allergenDetails));
     }
 
     @DeleteMapping("/{allergenId}")

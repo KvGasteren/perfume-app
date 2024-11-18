@@ -1,15 +1,17 @@
 package com.perfumeapp.perfumeapp.controller;
 
+import com.perfumeapp.perfumeapp.dto.FormulaDTO;
+import com.perfumeapp.perfumeapp.dto.IngredientDTO;
 import com.perfumeapp.perfumeapp.model.Formula;
 import com.perfumeapp.perfumeapp.model.FormulaIngredient;
 import com.perfumeapp.perfumeapp.service.FormulaService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/api/formulas")
@@ -18,52 +20,54 @@ public class FormulaController {
     private FormulaService formulaService;
 
     @PostMapping()
-    public Formula createFormula(@RequestBody Formula formula) {
-        return formulaService.createFormula(formula);
+    public ResponseEntity<FormulaDTO> createFormula(@RequestBody FormulaDTO formulaDTO) {
+        return ResponseEntity.ok(formulaService.createFormula(formulaDTO));
     }
 
-    @GetMapping()
-    public List<Formula> getAllFormulas() {
-        return formulaService.getAllFormulas();
+    @PostMapping("/{formulaId}/ingredients")
+    public ResponseEntity<FormulaDTO> allIngredient(
+            @PathVariable Long formulaId, @RequestBody IngredientDTO ingredientDTO) {
+        return ResponseEntity.ok(formulaService.addIngredient(formulaId, ingredientDTO));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Formula> getFormula(@PathVariable Long id) {
-        return formulaService.getFormulaById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Formula> updateFormula(@PathVariable Long id, @RequestBody Formula formulaDetails) {
-        Optional<Formula> existingFormulaOptional = formulaService.getFormulaById(id);
-        if (existingFormulaOptional.isPresent()) {
-            Formula existingFormula = existingFormulaOptional.get();
+    public ResponseEntity<FormulaDTO> updateFormula(
+            @PathVariable Long id, @RequestBody FormulaDTO formulaDTO) {
+        return ResponseEntity.ok(formulaService.updateFormulaName(id, formulaDTO));
+    }
 
-            if (formulaDetails.getName() != null) {
-                existingFormula.setName(formulaDetails.getName());
-            }
-            Formula updatedFormula = formulaService.updateFormula(id, existingFormula);
-            return ResponseEntity.ok(updatedFormula);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    @PutMapping("/{formulaId}/ingredients/{ingredientId}")
+    public ResponseEntity<FormulaDTO> updateIngredientConcentration(
+            @PathVariable Long formulaId,
+            @PathVariable Long ingredientId,
+            @RequestBody double concentration) {
+        return ResponseEntity.ok(formulaService.updateIngredientConcentration(
+                formulaId, ingredientId, concentration));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteFormula(@PathVariable Long id) {
-        formulaService.deleteFormula(id);
+        formulaService.removeFormula(id);
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/{formulaId}/add-ingredient")
-    public ResponseEntity<FormulaIngredient> addIngredientToFormula(
-            @PathVariable Long formulaId,
-            @RequestParam Long ingredientId,
-            @RequestParam double concentration) {
-        FormulaIngredient formulaIngredient = formulaService.addIngredientToFormula(
-                formulaId, ingredientId, concentration);
-        return ResponseEntity.ok(formulaIngredient);
+    @DeleteMapping("/{formulaId}/ingredients/{ingredientId}")
+    public ResponseEntity<FormulaDTO> removeIngredient(
+            @PathVariable Long formulaId, @PathVariable Long ingredientId) {
+        return ResponseEntity.ok(formulaService.removeIngredient(formulaId, ingredientId));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<FormulaDTO>> getAllFormulas() {
+        List<FormulaDTO> formulas = formulaService.getAllFormulas();
+        return ResponseEntity.ok(formulas);
+
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<FormulaDTO> getFormula(@PathVariable Long id) {
+        return ResponseEntity.ok(formulaService.getFormulaById(id));
     }
 
 }
