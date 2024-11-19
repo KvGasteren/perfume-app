@@ -1,6 +1,7 @@
 package com.perfumeapp.perfumeapp.service;
 
 import com.perfumeapp.perfumeapp.dto.AllergenDTO;
+import com.perfumeapp.perfumeapp.exception.ResourceNotFoundException;
 import com.perfumeapp.perfumeapp.model.Allergen;
 import com.perfumeapp.perfumeapp.repository.AllergenRepository;
 import org.slf4j.Logger;
@@ -62,6 +63,6 @@ public class AllergenService {
 
     private Allergen retreiveById(Long id) {
         return allergenRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Allergen not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Allergen not found"));
     }
 }

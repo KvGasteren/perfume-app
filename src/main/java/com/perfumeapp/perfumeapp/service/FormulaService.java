@@ -3,6 +3,7 @@ package com.perfumeapp.perfumeapp.service;
 import com.perfumeapp.perfumeapp.dto.AllergenDTO;
 import com.perfumeapp.perfumeapp.dto.FormulaDTO;
 import com.perfumeapp.perfumeapp.dto.IngredientDTO;
+import com.perfumeapp.perfumeapp.exception.ResourceNotFoundException;
 import com.perfumeapp.perfumeapp.model.Formula;
 import com.perfumeapp.perfumeapp.model.FormulaIngredient;
 import com.perfumeapp.perfumeapp.model.Ingredient;
@@ -30,10 +31,9 @@ public class FormulaService {
     }
 
     public FormulaDTO addIngredient(Long formulaId, IngredientDTO ingredientDTO) {
-        Formula formula = formulaRepository.findById(formulaId)
-                .orElseThrow(() -> new RuntimeException("Formula not found"));
+        Formula formula = retrieveFormula(formulaId);
         Ingredient ingredient = ingredientRepository.findById(ingredientDTO.getId())
-                .orElseThrow(() -> new RuntimeException("Ingredient not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Ingredient not found"));
         FormulaIngredient formulaIngredient = new FormulaIngredient();
         formulaIngredient.setFormula(formula);
         formulaIngredient.setIngredient(ingredient);
@@ -46,21 +46,19 @@ public class FormulaService {
     }
 
     public FormulaDTO updateFormulaName(Long formulaId, FormulaDTO formulaDTO) {
-        Formula formula = formulaRepository.findById(formulaId)
-                .orElseThrow(() -> new RuntimeException("Formula not found"));
+        Formula formula = retrieveFormula(formulaId);
         formula.setName(formulaDTO.getName());
         formulaRepository.save(formula);
         return convertToDTO(formula);
     }
 
     public FormulaDTO updateIngredientConcentration(Long formulaId, Long ingredientId, double concentration) {
-        Formula formula = formulaRepository.findById(formulaId)
-                .orElseThrow(() -> new RuntimeException("Formula not found"));
+        Formula formula = retrieveFormula(formulaId);
 
         FormulaIngredient formulaIngredient = formula.getFormulaIngredients().stream()
                 .filter(fi -> fi.getIngredient().getId().equals(ingredientId))
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("Ingredient not associated with the formula"));
+                .orElseThrow(() -> new ResourceNotFoundException("Ingredient not associated with the formula"));
 
         formulaIngredient.setConcentration(concentration);
         formulaRepository.save(formula);
@@ -69,22 +67,19 @@ public class FormulaService {
     }
 
     public FormulaDTO removeIngredient(Long formulaId, Long ingredientId) {
-        Formula formula = formulaRepository.findById(formulaId)
-                .orElseThrow(() -> new RuntimeException("Formula not found"));
+        Formula formula = retrieveFormula(formulaId);
         formula.getFormulaIngredients().removeIf(fi -> fi.getIngredient().getId().equals(ingredientId));
         formulaRepository.save(formula);
         return convertToDTO(formula);
     }
 
     public void removeFormula(Long id) {
-        Formula formula = formulaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Formula not found"));
+        Formula formula = retrieveFormula(id);
         formulaRepository.delete(formula);
     }
 
     public FormulaDTO getFormulaById(Long id) {
-        Formula formula = formulaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Formula not found"));
+        Formula formula = retrieveFormula(id);
         return convertToDTO(formula);
     }
 
@@ -124,5 +119,11 @@ public class FormulaService {
 
         dto.setIngredients(ingredients);
         return dto;
+    }
+
+    private Formula retrieveFormula(Long formulaId) {
+        Formula formula = formulaRepository.findById(formulaId)
+                .orElseThrow(() -> new ResourceNotFoundException("Formula not found"));
+        return formula;
     }
 }
