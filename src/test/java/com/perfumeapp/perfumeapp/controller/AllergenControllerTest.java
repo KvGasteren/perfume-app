@@ -78,4 +78,36 @@ class AllergenControllerTest {
 
         verify(allergenService, times(1)).getAllergenById(1L);
     }
+
+//    @Test
+//    void testUpdateAllergen() throws Exception {
+//        when(allergenService.updateAllergen(eq(1L), any(AllergenDTO.class))).thenReturn(sampleAllergen);
+//
+//        mockMvc.perform(put("/api/allergens/1")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content("{\"name\": \"Updated Linalool\", \"maxConcentration\": 0.2}"))
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$.id").value(1))
+//                .andExpect(jsonPath("$.name").value("Linalool")) // sampleAllergen
+//                .andExpect(jsonPath("$.maxConcentration").value(0.1)); // sampleAllergen
+//
+//        verify(allergenService, times(1)).updateAllergen(eq(1L), any(AllergenDTO.class));
+//    }
+
+
+    @Test
+    void testUpdateAllergen() throws Exception {
+        when(allergenService.updateAllergen(eq(1L), any(AllergenDTO.class))).thenReturn(sampleAllergen);
+
+        mockMvc.perform(put("/api/allergens/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\":\"Updated Linalool\",\"maxConcentration\":0.2}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.name").value("Linalool")) // SampleAllergen has this name
+                .andExpect(jsonPath("$.maxConcentration").value(0.1)); // SampleAllergen has this concentration
+
+        verify(allergenService, times(1)).updateAllergen(eq(1L), any(AllergenDTO.class));
+    }
+
 }
