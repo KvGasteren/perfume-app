@@ -1,0 +1,7 @@
+{
+  "scripts" : {
+    "start:backend": "cd backend && mvn spring-boot:run",
+    "start:frontend": "cd frontend && npm start",
+    "start": "npm run start:backend & npm run start:frontend"
+  }
+}
