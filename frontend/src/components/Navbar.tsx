@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Link from "next/link";
 
 const Navbar: React.FC = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -10,7 +11,9 @@ const Navbar: React.FC = () => {
     return (
         <header className="bg-white shadow p-4">
             <nav className="container mx-auto flex justify-between items-center">
+                <Link href={"/"}>
                 <h1 className="text-xl font-bold text-primary-dark">Perfume App</h1>
+                </Link>
                 <button
                     className="block md:hidden text-gray-700 focus:outline-none"
                     onClick={toggleMenu}
@@ -61,10 +64,10 @@ const Navbar: React.FC = () => {
                     </li>
                     <li>
                         <a
-                            href="/reports"
+                            href="/allergens"
                             className="block text-gray-700 hover:text-primary-dark transition-colors p-4 md:p-0"
                         >
-                            Reports
+                            Allergens
                         </a>
                     </li>
                 </ul>

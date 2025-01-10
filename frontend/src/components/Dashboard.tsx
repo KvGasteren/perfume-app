@@ -36,7 +36,7 @@ const Dashboard: React.FC = () => {
                 <div className="card bg-white shadow rounded p-4 sm:p-6">
                     <h2 className="text-lg md:text-xl font-bold mb-2">Monitor Allergens</h2>
                     <p>Stay compliant by tracking allergens in your ingredients.</p>
-                    <Link href="/ingredients" className="text-primary-dark font-semibold mt-4 block hover:underline">
+                    <Link href="/allergens" className="text-primary-dark font-semibold mt-4 block hover:underline">
                             Learn More →
                     </Link>
                 </div>

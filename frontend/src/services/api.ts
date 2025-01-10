@@ -19,3 +19,4 @@ export const addAllergen = (ingredientId: number, data: any) =>
     API.post(`/ingredients/${ingredientId}/allergens`, data);
 export const removeAllergen = (ingredientId: number, allergenId: number) =>
     API.delete(`/ingredients/${ingredientId}/allergens/${allergenId}`);
+export const getAllergens = () => API.get('/allergens');
