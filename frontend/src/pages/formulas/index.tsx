@@ -1,10 +1,12 @@
 import React from 'react';
 import FormulaList from '../../components/FormulaList';
+import FormulaForm from "@/src/components/FormulaForm";
 
 const FormulasPage: React.FC = () => {
     return (
         <div className="p-4">
             <h1 className="text-2xl font-bold">Formulas</h1>
+            <FormulaForm />
             <FormulaList />
         </div>
     );
