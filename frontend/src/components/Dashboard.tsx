@@ -4,10 +4,10 @@ const Dashboard: React.FC = () => {
     return (
         <div className="bg-gray-100 min-h-screen">
             {/* Hero Section */}
-            <section className="hero bg-gradient-to-r from-indigo-500 to-purple-500 text-white p-16 text-center">
+            <section className="hero bg-gradient-to-r from-primary-dark to-primary text-white p-16 text-center">
                 <h1 className="text-4xl font-extrabold mb-4">Welcome to Perfume App</h1>
                 <p className="text-lg mb-6">Your hub for managing formulas and ingredients.</p>
-                <button className="bg-white text-indigo-500 font-semibold py-2 px-4 rounded shadow hover:bg-gray-100">
+                <button className="bg-white text-secondary-dark font-semibold py-2 px-4 rounded shadow hover:bg-gray-100">
                     Get Started
                 </button>
             </section>
