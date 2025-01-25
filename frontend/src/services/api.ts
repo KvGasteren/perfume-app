@@ -7,6 +7,7 @@ export const getFormulas = () => API.get('/formulas');
 export const createFormula = (data: any) => API.post('/formulas', data);
 export const updateFormula = (id: number, data: any) => API.put(`/formulas/${id}`, data);
 export const deleteFormula = (id: number) => API.delete(`/formulas/${id}`);
+export const getFormulaById = (formulaId: number): Promise<any> => API.get(`formulas/${formulaId}`);
 
 // Ingredients
 export const getIngredients = () => API.get('/ingredients');
