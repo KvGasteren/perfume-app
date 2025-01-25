@@ -1,11 +1,7 @@
 package com.perfumeapp.perfumeapp.controller;
 
 import com.perfumeapp.perfumeapp.dto.AllergenDTO;
-import com.perfumeapp.perfumeapp.model.Allergen;
-import com.perfumeapp.perfumeapp.repository.AllergenRepository;
 import com.perfumeapp.perfumeapp.service.AllergenService;
-import org.apache.coyote.Response;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +11,7 @@ import java.util.List;
 @RequestMapping("/api/allergens")
 public class AllergenController {
 
-    private AllergenService allergenService;
+    private final AllergenService allergenService;
 
     public AllergenController(AllergenService allergenService) {
         this.allergenService = allergenService;

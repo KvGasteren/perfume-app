@@ -2,22 +2,17 @@ package com.perfumeapp.perfumeapp.controller;
 
 import com.perfumeapp.perfumeapp.dto.FormulaDTO;
 import com.perfumeapp.perfumeapp.dto.IngredientDTO;
-import com.perfumeapp.perfumeapp.model.Formula;
-import com.perfumeapp.perfumeapp.model.FormulaIngredient;
 import com.perfumeapp.perfumeapp.service.FormulaService;
-import org.apache.coyote.Response;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/formulas")
 public class FormulaController {
 
-    private FormulaService formulaService;
+    private final FormulaService formulaService;
 
     public FormulaController(FormulaService formulaService) {
         this.formulaService = formulaService;

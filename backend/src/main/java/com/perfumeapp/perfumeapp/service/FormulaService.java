@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @Service
 public class FormulaService {
 
-    private FormulaRepository formulaRepository;
+    private final FormulaRepository formulaRepository;
 
     public FormulaService(FormulaRepository formulaRepository) {
         this.formulaRepository = formulaRepository;
@@ -126,8 +126,7 @@ public class FormulaService {
     }
 
     private Formula retrieveFormula(Long formulaId) {
-        Formula formula = formulaRepository.findById(formulaId)
+        return formulaRepository.findById(formulaId)
                 .orElseThrow(() -> new ResourceNotFoundException("Formula not found"));
-        return formula;
     }
 }

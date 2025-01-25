@@ -4,19 +4,15 @@ import com.perfumeapp.perfumeapp.dto.AllergenDTO;
 import com.perfumeapp.perfumeapp.exception.ResourceNotFoundException;
 import com.perfumeapp.perfumeapp.model.Allergen;
 import com.perfumeapp.perfumeapp.repository.AllergenRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class AllergenService {
 
-    private AllergenRepository allergenRepository;
+    private final AllergenRepository allergenRepository;
     public AllergenService(AllergenRepository allergenRepository) {
         this.allergenRepository = allergenRepository;
     }

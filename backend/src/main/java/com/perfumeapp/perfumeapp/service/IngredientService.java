@@ -7,18 +7,18 @@ import com.perfumeapp.perfumeapp.model.Allergen;
 import com.perfumeapp.perfumeapp.model.Ingredient;
 import com.perfumeapp.perfumeapp.model.IngredientAllergen;
 import com.perfumeapp.perfumeapp.repository.AllergenRepository;
-import com.perfumeapp.perfumeapp.repository.IngredientAllergenRepository;
 import com.perfumeapp.perfumeapp.repository.IngredientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class IngredientService {
 
-    private IngredientRepository ingredientRepository;
+    private final IngredientRepository ingredientRepository;
 
     public IngredientService(IngredientRepository ingredientRepository) {
         this.ingredientRepository = ingredientRepository;
@@ -119,8 +119,7 @@ public class IngredientService {
     }
 
     private Ingredient retrieveIngredient(Long id) {
-        Ingredient ingredient = ingredientRepository.findById(id)
+        return ingredientRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Ingredient not found"));
-        return ingredient;
     }
 }
