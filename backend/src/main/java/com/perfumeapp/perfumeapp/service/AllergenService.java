@@ -15,8 +15,11 @@ import java.util.stream.Collectors;
 
 @Service
 public class AllergenService {
-    @Autowired
+
     private AllergenRepository allergenRepository;
+    public AllergenService(AllergenRepository allergenRepository) {
+        this.allergenRepository = allergenRepository;
+    }
 
     public AllergenDTO createAllergen(AllergenDTO allergenDTO) {
         Allergen allergen = new Allergen();

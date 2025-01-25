@@ -17,8 +17,12 @@ import java.util.stream.Collectors;
 
 @Service
 public class IngredientService {
-    @Autowired
+
     private IngredientRepository ingredientRepository;
+
+    public IngredientService(IngredientRepository ingredientRepository) {
+        this.ingredientRepository = ingredientRepository;
+    }
 
     @Autowired
     private AllergenRepository allergenRepository;

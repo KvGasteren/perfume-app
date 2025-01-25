@@ -13,8 +13,11 @@ import java.util.Set;
 @RestController
 @RequestMapping("/api/ingredients")
 public class IngredientController {
-    @Autowired
+
     private IngredientService ingredientService;
+    public IngredientController(IngredientService ingredientService) {
+        this.ingredientService = ingredientService;
+    }
 
     @PostMapping
     public ResponseEntity<IngredientDTO> createIngredient(@RequestBody IngredientDTO ingredientDTO) {

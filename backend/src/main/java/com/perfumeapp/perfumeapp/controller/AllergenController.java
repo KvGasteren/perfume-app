@@ -14,8 +14,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/allergens")
 public class AllergenController {
-    @Autowired
+
     private AllergenService allergenService;
+
+    public AllergenController(AllergenService allergenService) {
+        this.allergenService = allergenService;
+    }
 
     @GetMapping()
     public List<AllergenDTO> getAllAllergens() {

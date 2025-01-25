@@ -16,8 +16,12 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/formulas")
 public class FormulaController {
-    @Autowired
+
     private FormulaService formulaService;
+
+    public FormulaController(FormulaService formulaService) {
+        this.formulaService = formulaService;
+    }
 
     @PostMapping()
     public ResponseEntity<FormulaDTO> createFormula(@RequestBody FormulaDTO formulaDTO) {

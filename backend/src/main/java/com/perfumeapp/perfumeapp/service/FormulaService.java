@@ -17,8 +17,12 @@ import java.util.stream.Collectors;
 
 @Service
 public class FormulaService {
-    @Autowired
+
     private FormulaRepository formulaRepository;
+
+    public FormulaService(FormulaRepository formulaRepository) {
+        this.formulaRepository = formulaRepository;
+    }
 
     @Autowired
     private IngredientRepository ingredientRepository;
