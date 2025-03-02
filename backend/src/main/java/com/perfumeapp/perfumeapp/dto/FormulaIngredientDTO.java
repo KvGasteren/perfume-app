@@ -3,10 +3,12 @@ package com.perfumeapp.perfumeapp.dto;
 import java.util.ArrayList;
 import java.util.List;
 
-public class IngredientDTO {
+public class FormulaIngredientDTO {
+
     private Long id;
     private String name;
     private List<IngredientAllergenDTO> allergens = new ArrayList<>();
+    private double parts;
 
     public Long getId() {
         return id;
@@ -30,5 +32,13 @@ public class IngredientDTO {
 
     public void setAllergens(List<IngredientAllergenDTO> allergens) {
         this.allergens = allergens;
+    }
+
+    public double getParts() {
+        return parts;
+    }
+
+    public void setParts(double parts) {
+        this.parts = parts;
     }
 }

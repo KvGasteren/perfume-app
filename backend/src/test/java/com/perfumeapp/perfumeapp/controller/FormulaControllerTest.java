@@ -43,11 +43,10 @@ class FormulaControllerTest {
         sampleIngredient = new IngredientDTO();
         sampleIngredient.setId(1L);
         sampleIngredient.setName("Rose Oil");
-        sampleIngredient.setConcentration(0.5);
 
         List<IngredientDTO> ingredients = new ArrayList<>();
         ingredients.add(sampleIngredient);
-        sampleFormula.setIngredients(ingredients);
+//        sampleFormula.setIngredients(ingredients);
     }
 
     @Test

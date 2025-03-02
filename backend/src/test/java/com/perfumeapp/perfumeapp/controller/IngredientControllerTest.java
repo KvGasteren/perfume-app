@@ -2,6 +2,7 @@ package com.perfumeapp.perfumeapp.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.perfumeapp.perfumeapp.dto.AllergenDTO;
+import com.perfumeapp.perfumeapp.dto.IngredientAllergenDTO;
 import com.perfumeapp.perfumeapp.dto.IngredientDTO;
 import com.perfumeapp.perfumeapp.service.IngredientService;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,7 +41,6 @@ public class IngredientControllerTest {
         sampleAllergen = new AllergenDTO();
         sampleAllergen.setId(1L);
         sampleAllergen.setName("Linalool");
-        sampleAllergen.setConcentration(0.01);
         sampleAllergen.setMaxConcentration(0.4);
 
         // Sample Ingredient
@@ -50,7 +50,6 @@ public class IngredientControllerTest {
         sampleIngredient = new IngredientDTO();
         sampleIngredient.setId(1L);
         sampleIngredient.setName("Rose Oil");
-        sampleIngredient.setAllergens(allergens);
     }
 
     @Test

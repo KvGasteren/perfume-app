@@ -1,6 +1,7 @@
 package com.perfumeapp.perfumeapp.service;
 
 import com.perfumeapp.perfumeapp.dto.AllergenDTO;
+import com.perfumeapp.perfumeapp.dto.IngredientAllergenDTO;
 import com.perfumeapp.perfumeapp.dto.IngredientDTO;
 import com.perfumeapp.perfumeapp.exception.ResourceNotFoundException;
 import com.perfumeapp.perfumeapp.model.Allergen;
@@ -42,7 +43,6 @@ public class IngredientService {
         IngredientAllergen ingredientAllergen = new IngredientAllergen();
         ingredientAllergen.setIngredient(ingredient);
         ingredientAllergen.setAllergen(allergen);
-        ingredientAllergen.setConcentration(allergenDTO.getConcentration());
 
         ingredient.getIngredientAllergens().add(ingredientAllergen);
         ingredientRepository.save(ingredient);
@@ -87,15 +87,16 @@ public class IngredientService {
         dto.setName(ingredient.getName());
 
 
-        List<AllergenDTO> allergens = (ingredient.getIngredientAllergens() == null)
+        List<IngredientAllergenDTO> allergens = (ingredient.getIngredientAllergens() == null)
             ? new ArrayList<>()
             : ingredient.getIngredientAllergens().stream()
                 .map(ia -> {
-                    AllergenDTO allergenDTO = new AllergenDTO();
-                    allergenDTO.setId(ia.getAllergen().getId());
-                    allergenDTO.setName(ia.getAllergen().getName());
-                    allergenDTO.setConcentration(ia.getConcentration());
-                    return allergenDTO;
+                    IngredientAllergenDTO ingredientAllergenDTO = new IngredientAllergenDTO();
+                    ingredientAllergenDTO.setAllergenId(ia.getAllergen().getId());
+                    ingredientAllergenDTO.setAllergenName(ia.getAllergen().getName());
+                    ingredientAllergenDTO.setAllergenMaxConcentration(ia.getAllergen().getMaxConcentration());
+                    ingredientAllergenDTO.setConcentration(ia.getConcentration());
+                    return ingredientAllergenDTO;
                 }).collect(Collectors.toList());
 
         dto.setAllergens(allergens);

@@ -1,8 +1,6 @@
 package com.perfumeapp.perfumeapp.service;
 
-import com.perfumeapp.perfumeapp.dto.AllergenDTO;
-import com.perfumeapp.perfumeapp.dto.FormulaDTO;
-import com.perfumeapp.perfumeapp.dto.IngredientDTO;
+import com.perfumeapp.perfumeapp.dto.*;
 import com.perfumeapp.perfumeapp.exception.ResourceNotFoundException;
 import com.perfumeapp.perfumeapp.model.Formula;
 import com.perfumeapp.perfumeapp.model.FormulaIngredient;
@@ -41,7 +39,6 @@ public class FormulaService {
         FormulaIngredient formulaIngredient = new FormulaIngredient();
         formulaIngredient.setFormula(formula);
         formulaIngredient.setIngredient(ingredient);
-        formulaIngredient.setConcentration(ingredientDTO.getConcentration());
 
         formula.getFormulaIngredients().add(formulaIngredient);
         formulaRepository.save(formula);
@@ -98,26 +95,26 @@ public class FormulaService {
         dto.setId(formula.getId());
         dto.setName(formula.getName());
 
-        List<IngredientDTO> ingredients = formula.getFormulaIngredients().stream()
+        List<FormulaIngredientDTO> ingredients = formula.getFormulaIngredients().stream()
                 .map(fi -> {
                     Ingredient ingredient = fi.getIngredient();
-                    IngredientDTO ingredientDTO = new IngredientDTO();
-                    ingredientDTO.setId(ingredient.getId());
-                    ingredientDTO.setName(ingredient.getName());
-                    ingredientDTO.setConcentration(fi.getConcentration());
+                    FormulaIngredientDTO formulaIngredientDTO = new FormulaIngredientDTO();
+                    formulaIngredientDTO.setId(ingredient.getId());
+                    formulaIngredientDTO.setName(ingredient.getName());
+                    formulaIngredientDTO.setParts(fi.getConcentration());
 
-                    List<AllergenDTO> allergenDTOs = ingredient.getIngredientAllergens().stream()
+                    List<IngredientAllergenDTO> ingredientAllergenDTOS = ingredient.getIngredientAllergens().stream()
                             .map(ia -> {
-                                AllergenDTO allergenDTO = new AllergenDTO();
-                                allergenDTO.setId(ia.getAllergen().getId());
-                                allergenDTO.setName(ia.getAllergen().getName());
-                                allergenDTO.setConcentration(ia.getConcentration());
-                                return allergenDTO;
+                                IngredientAllergenDTO ingredientAllergenDTO = new IngredientAllergenDTO();
+                                ingredientAllergenDTO.setAllergenId(ia.getAllergen().getId());
+                                ingredientAllergenDTO.setAllergenName(ia.getAllergen().getName());
+                                ingredientAllergenDTO.setConcentration(ia.getConcentration());
+                                return ingredientAllergenDTO;
                             })
                             .collect(Collectors.toList());
 
-                    ingredientDTO.setAllergens(allergenDTOs);
-                    return ingredientDTO;
+                    formulaIngredientDTO.setAllergens(ingredientAllergenDTOS);
+                    return formulaIngredientDTO;
                 })
                 .collect(Collectors.toList());
 

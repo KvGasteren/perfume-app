@@ -5,7 +5,7 @@ import java.util.List;
 public class FormulaDTO {
     private Long id;
     private String name;
-    private List<IngredientDTO> ingredients;
+    private List<FormulaIngredientDTO> ingredients;
 
     public Long getId() {
         return id;
@@ -23,11 +23,11 @@ public class FormulaDTO {
         this.name = name;
     }
 
-    public List<IngredientDTO> getIngredients() {
+    public List<FormulaIngredientDTO> getIngredients() {
         return ingredients;
     }
 
-    public void setIngredients(List<IngredientDTO> ingredients) {
+    public void setIngredients(List<FormulaIngredientDTO> ingredients) {
         this.ingredients = ingredients;
     }
 }
