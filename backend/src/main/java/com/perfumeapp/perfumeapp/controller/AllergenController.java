@@ -2,9 +2,11 @@ package com.perfumeapp.perfumeapp.controller;
 
 import com.perfumeapp.perfumeapp.dto.AllergenDTO;
 import com.perfumeapp.perfumeapp.service.AllergenService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -27,10 +29,17 @@ public class AllergenController {
         return ResponseEntity.ok(allergenService.getAllergenById(allergenId));
     }
 
-    @PostMapping()
-    public ResponseEntity<AllergenDTO> createAllergen(@RequestBody AllergenDTO allergen) {
-        return ResponseEntity.ok(allergenService.createAllergen(allergen));
-    }
+//    @PostMapping()
+//    public ResponseEntity<AllergenDTO> createAllergen(@RequestBody AllergenDTO allergen) {
+//        return ResponseEntity.ok(allergenService.createAllergen(allergen));
+//    }
+@PostMapping
+public ResponseEntity<AllergenDTO> createAllergen(@Valid @RequestBody AllergenDTO allergenDTO) {
+    AllergenDTO createdAllergen = allergenService.createAllergen(allergenDTO);
+    return ResponseEntity
+            .created(URI.create("/api/allergens/" + createdAllergen.getId()))
+            .body(createdAllergen);
+}
 
     @PutMapping("/{allergenId}")
     public ResponseEntity<AllergenDTO> updateAllergen(

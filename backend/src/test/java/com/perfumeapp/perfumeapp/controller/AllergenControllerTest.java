@@ -1,6 +1,8 @@
 package com.perfumeapp.perfumeapp.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.perfumeapp.perfumeapp.dto.AllergenDTO;
+import com.perfumeapp.perfumeapp.exception.ResourceNotFoundException;
 import com.perfumeapp.perfumeapp.service.AllergenService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,6 +24,9 @@ class AllergenControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @MockBean
     private AllergenService allergenService;
@@ -51,21 +56,6 @@ class AllergenControllerTest {
     }
 
     @Test
-    void testCreateAllergen() throws Exception {
-        when(allergenService.createAllergen(Mockito.any(AllergenDTO.class))).thenReturn(sampleAllergen);
-
-        mockMvc.perform(post("/api/allergens")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"name\":\"Linalool\",\"maxConcentration\":0.1}"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.name").value("Linalool"))
-                .andExpect(jsonPath("$.maxConcentration").value(0.1));
-
-        verify(allergenService, times(1)).createAllergen(Mockito.any(AllergenDTO.class));
-    }
-
-    @Test
     void testGetAllergenById() throws Exception {
         when(allergenService.getAllergenById(1L)).thenReturn(sampleAllergen);
 
@@ -79,35 +69,76 @@ class AllergenControllerTest {
         verify(allergenService, times(1)).getAllergenById(1L);
     }
 
-//    @Test
-//    void testUpdateAllergen() throws Exception {
-//        when(allergenService.updateAllergen(eq(1L), any(AllergenDTO.class))).thenReturn(sampleAllergen);
-//
-//        mockMvc.perform(put("/api/allergens/1")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content("{\"name\": \"Updated Linalool\", \"maxConcentration\": 0.2}"))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.id").value(1))
-//                .andExpect(jsonPath("$.name").value("Linalool")) // sampleAllergen
-//                .andExpect(jsonPath("$.maxConcentration").value(0.1)); // sampleAllergen
-//
-//        verify(allergenService, times(1)).updateAllergen(eq(1L), any(AllergenDTO.class));
-//    }
+    @Test
+    void testCreateAllergen() throws Exception {
+        when(allergenService.createAllergen(Mockito.any(AllergenDTO.class))).thenReturn(sampleAllergen);
 
+        mockMvc.perform(post("/api/allergens")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(sampleAllergen)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.name").value("Linalool"))
+                .andExpect(jsonPath("$.maxConcentration").value(0.1));
+
+        verify(allergenService, times(1)).createAllergen(Mockito.any(AllergenDTO.class));
+    }
 
     @Test
     void testUpdateAllergen() throws Exception {
+        // update sample allergen
+        sampleAllergen.setMaxConcentration(0.2);
+        sampleAllergen.setName("Updated Linalool");
         when(allergenService.updateAllergen(eq(1L), any(AllergenDTO.class))).thenReturn(sampleAllergen);
 
         mockMvc.perform(put("/api/allergens/1")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"name\":\"Updated Linalool\",\"maxConcentration\":0.2}"))
+                        .content(objectMapper.writeValueAsString(sampleAllergen)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.name").value("Linalool")) // SampleAllergen has this name
-                .andExpect(jsonPath("$.maxConcentration").value(0.1)); // SampleAllergen has this concentration
+                .andExpect(jsonPath("$.name").value("Updated Linalool")) // SampleAllergen has this name
+                .andExpect(jsonPath("$.maxConcentration").value(0.2)); // SampleAllergen has this concentration
 
-        verify(allergenService, times(1)).updateAllergen(eq(1L), any(AllergenDTO.class));
+        verify(allergenService, times(1)).updateAllergen(eq(1L), argThat(dto ->
+                dto.getName().equals("Updated Linalool") && dto.getMaxConcentration() == 0.2
+        ));
+    }
+
+    @Test
+    void testDeleteAllergen() throws Exception {
+        doNothing().when(allergenService).deleteAllergen(1L);
+
+        mockMvc.perform(delete("/api/allergens/1"))
+                .andExpect(status().isNoContent());
+
+        verify(allergenService, times(1)).deleteAllergen(1L);
+    }
+
+    @Test
+    void testGetAllergenById_NotFound() throws Exception {
+        when(allergenService.getAllergenById(99L)).thenThrow(new ResourceNotFoundException("Allergen not found"));
+
+        mockMvc.perform(get("/api/allergens/99"))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void testCreateAllergen_BadRequest() throws Exception {
+        mockMvc.perform(post("/api/allergens")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}")) // Invalid payload
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void testUpdateAllergen_NotFound() throws Exception {
+        when(allergenService.updateAllergen(eq(99L), any(AllergenDTO.class)))
+                .thenThrow(new ResourceNotFoundException("Allergen not found"));
+
+        mockMvc.perform(put("/api/allergens/99")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(sampleAllergen)))
+                .andExpect(status().isNotFound());
     }
 
 }

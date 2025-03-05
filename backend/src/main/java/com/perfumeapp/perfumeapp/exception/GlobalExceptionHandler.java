@@ -2,6 +2,7 @@ package com.perfumeapp.perfumeapp.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -43,6 +44,20 @@ public class GlobalExceptionHandler {
         ErrorResponse errorDetails = new ErrorResponse(
                 new Date(), ex.getMessage(), request.getDescription(false));
         return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<GlobalExceptionHandler.ErrorResponse> handleValidationException(
+            MethodArgumentNotValidException ex, WebRequest request) {
+        String message = ex.getBindingResult().getFieldErrors().stream()
+                .map(error -> error.getField() + ": " + error.getDefaultMessage())
+                .findFirst()
+                .orElse("Invalid request data");
+
+        GlobalExceptionHandler.ErrorResponse errorDetails = new GlobalExceptionHandler.ErrorResponse(
+                new Date(), message, request.getDescription(false));
+
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
     }
 
     // Handle Generic Exceptions

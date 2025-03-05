@@ -1,10 +1,19 @@
 package com.perfumeapp.perfumeapp.dto;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class AllergenDTO {
 
     private Long id;
+
+    @NotBlank(message="Name is required")
     private String name;
+
     private double maxConcentration;
+
+    public AllergenDTO() {
+
+    }
 
     public Long getId() {
         return id;
