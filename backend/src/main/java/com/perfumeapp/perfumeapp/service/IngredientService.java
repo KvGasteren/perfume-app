@@ -3,6 +3,7 @@ package com.perfumeapp.perfumeapp.service;
 import com.perfumeapp.perfumeapp.dto.AllergenDTO;
 import com.perfumeapp.perfumeapp.dto.IngredientAllergenDTO;
 import com.perfumeapp.perfumeapp.dto.IngredientDTO;
+import com.perfumeapp.perfumeapp.exception.IngredientDeletionException;
 import com.perfumeapp.perfumeapp.exception.ResourceNotFoundException;
 import com.perfumeapp.perfumeapp.model.Allergen;
 import com.perfumeapp.perfumeapp.model.Ingredient;
@@ -10,6 +11,7 @@ import com.perfumeapp.perfumeapp.model.IngredientAllergen;
 import com.perfumeapp.perfumeapp.repository.AllergenRepository;
 import com.perfumeapp.perfumeapp.repository.IngredientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -35,13 +37,14 @@ public class IngredientService {
         return convertToDTO(savedIngredient);
     }
 
-    public IngredientDTO addAllergen(Long ingredientId, AllergenDTO allergenDTO) {
+    public IngredientDTO addAllergen(Long ingredientId, IngredientAllergenDTO ingredientAllergenDTO) {
         Ingredient ingredient = retrieveIngredient(ingredientId);
-        Allergen allergen = allergenRepository.findById(allergenDTO.getId())
+        Allergen allergen = allergenRepository.findById(ingredientAllergenDTO.getAllergenId())
                 .orElseThrow(() -> new ResourceNotFoundException("Allergen not found"));
 
         IngredientAllergen ingredientAllergen = new IngredientAllergen();
         ingredientAllergen.setIngredient(ingredient);
+        ingredientAllergen.setConcentration(ingredientAllergenDTO.getConcentration());
         ingredientAllergen.setAllergen(allergen);
 
         ingredient.getIngredientAllergens().add(ingredientAllergen);
@@ -116,7 +119,11 @@ public class IngredientService {
 
     public void removeIngredient(Long id) {
         Ingredient ingredient = retrieveIngredient(id);
-        ingredientRepository.delete(ingredient);
+        try {
+            ingredientRepository.delete(ingredient);
+        } catch (DataIntegrityViolationException e) {
+            throw new IngredientDeletionException("Cannot delete ingredient because it is part of a formula");
+        }
     }
 
     private Ingredient retrieveIngredient(Long id) {

@@ -1,6 +1,7 @@
 package com.perfumeapp.perfumeapp.controller;
 
 import com.perfumeapp.perfumeapp.dto.AllergenDTO;
+import com.perfumeapp.perfumeapp.dto.IngredientAllergenDTO;
 import com.perfumeapp.perfumeapp.dto.IngredientDTO;
 import com.perfumeapp.perfumeapp.service.IngredientService;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +25,8 @@ public class IngredientController {
 
     @PostMapping("/{ingredientId}/allergens")
     public ResponseEntity<IngredientDTO> addAllergen(
-            @PathVariable Long ingredientId, @RequestBody AllergenDTO allergenDTO) {
-        return ResponseEntity.ok(ingredientService.addAllergen(ingredientId, allergenDTO));
+            @PathVariable Long ingredientId, @RequestBody IngredientAllergenDTO ingredientAllergenDTO) {
+        return ResponseEntity.ok(ingredientService.addAllergen(ingredientId, ingredientAllergenDTO));
     }
 
     @PutMapping("/{ingredientId}")

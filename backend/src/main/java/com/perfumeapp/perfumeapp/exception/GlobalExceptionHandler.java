@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
 
 import java.util.Date;
@@ -47,16 +48,24 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<GlobalExceptionHandler.ErrorResponse> handleValidationException(
+    public ResponseEntity<ErrorResponse> handleValidationException(
             MethodArgumentNotValidException ex, WebRequest request) {
         String message = ex.getBindingResult().getFieldErrors().stream()
                 .map(error -> error.getField() + ": " + error.getDefaultMessage())
                 .findFirst()
                 .orElse("Invalid request data");
 
-        GlobalExceptionHandler.ErrorResponse errorDetails = new GlobalExceptionHandler.ErrorResponse(
+        ErrorResponse errorDetails = new ErrorResponse(
                 new Date(), message, request.getDescription(false));
 
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(IngredientDeletionException.class)
+    public ResponseEntity<ErrorResponse> handleIngredientDeletionException(IngredientDeletionException e
+            , WebRequest request) {
+        ErrorResponse errorDetails = new ErrorResponse(
+                new Date(), e.getMessage(), request.getDescription(false));
         return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
     }
 
