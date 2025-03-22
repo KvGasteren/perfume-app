@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { getFormulaById } from "../../services/api"; // Adjust this to your API service
+import { Formula, Ingredient, Allergen } from '@/src/types/perfume';
 
 const FormulaDetails: React.FC = () => {
     const router = useRouter();
     const { id } = router.query;
-    const [formula, setFormula] = useState<any | null>(null);
+    const [formula, setFormula] = useState<Formula | null>(null);
 
     useEffect(() => {
         if (id) {
@@ -21,15 +22,15 @@ const FormulaDetails: React.FC = () => {
     const calculateAllergenSummary = () => {
         const allergens: { [key: string]: { totalConcentration: number; maxConcentration: number } } = {};
 
-        formula?.ingredients.forEach((ingredient: any) => {
-            ingredient.allergens.forEach((allergen: any) => {
+        formula?.ingredients.forEach((ingredient: Ingredient) => {
+            ingredient.allergens.forEach((allergen: Allergen) => {
                 if (!allergens[allergen.name]) {
                     allergens[allergen.name] = {
                         totalConcentration: 0,
-                        maxConcentration: allergen.maxConcentration,
+                        maxConcentration: allergen.maxConcentration * ingredient.concentration,
                     };
                 }
-                allergens[allergen.name].totalConcentration += allergen.concentration;
+                allergens[allergen.name].totalConcentration += allergen.concentration * ingredient.concentration;
             });
         });
 
@@ -55,10 +56,10 @@ const FormulaDetails: React.FC = () => {
                         </tr>
                         </thead>
                         <tbody>
-                        {formula.ingredients.map((ingredient: any) => (
+                        {formula.ingredients.map((ingredient: Ingredient) => (
                             <tr key={ingredient.id}>
                                 <td className="border border-gray-300 px-4 py-2">{ingredient.name}</td>
-                                <td className="border border-gray-300 px-4 py-2">{ingredient.concentration.toFixed(2)}</td>
+                                <td className="border border-gray-300 px-4 py-2">{ingredient.concentration?.toFixed(2)}</td>
                             </tr>
                         ))}
                         </tbody>
@@ -83,6 +84,7 @@ const FormulaDetails: React.FC = () => {
                         ))}
                         </tbody>
                     </table>
+                    <p className="text-red-500">NB total concentration is now calculated in front-end</p>
                 </>
             ) : (
                 <p>Loading...</p>

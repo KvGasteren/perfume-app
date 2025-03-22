@@ -1,7 +1,6 @@
 package com.perfumeapp.perfumeapp.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.perfumeapp.perfumeapp.dto.AllergenDTO;
 import com.perfumeapp.perfumeapp.dto.IngredientAllergenDTO;
 import com.perfumeapp.perfumeapp.dto.IngredientDTO;
 import com.perfumeapp.perfumeapp.service.IngredientService;
@@ -39,8 +38,8 @@ public class IngredientControllerTest {
     void setUp() {
         // Sample Allergen
         sampleAllergen = new IngredientAllergenDTO();
-        sampleAllergen.setAllergenId(1L);
-        sampleAllergen.setAllergenName("Linalool");
+        sampleAllergen.setId(1L);
+        sampleAllergen.setName("Linalool");
         sampleAllergen.setAllergenMaxConcentration(0.4);
 
         // Sample Ingredient

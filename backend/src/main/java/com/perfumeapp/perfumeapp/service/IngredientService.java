@@ -1,6 +1,5 @@
 package com.perfumeapp.perfumeapp.service;
 
-import com.perfumeapp.perfumeapp.dto.AllergenDTO;
 import com.perfumeapp.perfumeapp.dto.IngredientAllergenDTO;
 import com.perfumeapp.perfumeapp.dto.IngredientDTO;
 import com.perfumeapp.perfumeapp.exception.IngredientDeletionException;
@@ -39,7 +38,7 @@ public class IngredientService {
 
     public IngredientDTO addAllergen(Long ingredientId, IngredientAllergenDTO ingredientAllergenDTO) {
         Ingredient ingredient = retrieveIngredient(ingredientId);
-        Allergen allergen = allergenRepository.findById(ingredientAllergenDTO.getAllergenId())
+        Allergen allergen = allergenRepository.findById(ingredientAllergenDTO.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Allergen not found"));
 
         IngredientAllergen ingredientAllergen = new IngredientAllergen();
@@ -95,8 +94,8 @@ public class IngredientService {
             : ingredient.getIngredientAllergens().stream()
                 .map(ia -> {
                     IngredientAllergenDTO ingredientAllergenDTO = new IngredientAllergenDTO();
-                    ingredientAllergenDTO.setAllergenId(ia.getAllergen().getId());
-                    ingredientAllergenDTO.setAllergenName(ia.getAllergen().getName());
+                    ingredientAllergenDTO.setId(ia.getAllergen().getId());
+                    ingredientAllergenDTO.setName(ia.getAllergen().getName());
                     ingredientAllergenDTO.setAllergenMaxConcentration(ia.getAllergen().getMaxConcentration());
                     ingredientAllergenDTO.setConcentration(ia.getConcentration());
                     return ingredientAllergenDTO;

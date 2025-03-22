@@ -2,8 +2,8 @@ package com.perfumeapp.perfumeapp.dto;
 
 public class IngredientAllergenDTO {
 
-    private Long allergenId;
-    private String allergenName;
+    private Long id;
+    private String name;
     private double maxConcentration;
     private double concentration;
 
@@ -12,27 +12,27 @@ public class IngredientAllergenDTO {
     }
 
     public IngredientAllergenDTO(Long allergenId, String allergenName, double concentration) {
-        this.allergenId = allergenId;
-        this.allergenName = allergenName;
+        this.id = allergenId;
+        this.name = allergenName;
         this.concentration = concentration;
     }
 
     // Getters and Setters
 
-    public Long getAllergenId() {
-        return allergenId;
+    public Long getId() {
+        return id;
     }
 
-    public void setAllergenId(Long allergenId) {
-        this.allergenId = allergenId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public String getAllergenName() {
-        return allergenName;
+    public String getName() {
+        return name;
     }
 
-    public void setAllergenName(String allergenName) {
-        this.allergenName = allergenName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public double getConcentration() {

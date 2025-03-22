@@ -1,11 +1,13 @@
 package com.perfumeapp.perfumeapp.dto;
 
+
 import java.util.List;
 
 public class FormulaDTO {
     private Long id;
     private String name;
     private List<FormulaIngredientDTO> ingredients;
+    private List<FormulaAllergenDTO> allergenSummary;
 
     public Long getId() {
         return id;
@@ -29,5 +31,13 @@ public class FormulaDTO {
 
     public void setIngredients(List<FormulaIngredientDTO> ingredients) {
         this.ingredients = ingredients;
+    }
+
+    public List<FormulaAllergenDTO> getAllergenSummary() {
+        return allergenSummary;
+    }
+
+    public void setAllergenSummary(List<FormulaAllergenDTO> allergenSummary) {
+        this.allergenSummary = allergenSummary;
     }
 }

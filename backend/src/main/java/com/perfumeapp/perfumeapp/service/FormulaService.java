@@ -106,8 +106,8 @@ public class FormulaService {
                     List<IngredientAllergenDTO> ingredientAllergenDTOS = ingredient.getIngredientAllergens().stream()
                             .map(ia -> {
                                 IngredientAllergenDTO ingredientAllergenDTO = new IngredientAllergenDTO();
-                                ingredientAllergenDTO.setAllergenId(ia.getAllergen().getId());
-                                ingredientAllergenDTO.setAllergenName(ia.getAllergen().getName());
+                                ingredientAllergenDTO.setId(ia.getAllergen().getId());
+                                ingredientAllergenDTO.setName(ia.getAllergen().getName());
                                 ingredientAllergenDTO.setConcentration(ia.getConcentration());
                                 return ingredientAllergenDTO;
                             })
@@ -117,6 +117,16 @@ public class FormulaService {
                     return formulaIngredientDTO;
                 })
                 .collect(Collectors.toList());
+
+        // set the concentration of each ingredient (parts / total parts)
+
+        double totalParts = ingredients.stream()
+                .mapToDouble(FormulaIngredientDTO::getParts)
+                .sum();
+        for (FormulaIngredientDTO ingredientDTO : ingredients) {
+            double concentration = totalParts > 0 ? ingredientDTO.getParts() / totalParts : 0.0;
+            ingredientDTO.setConcentration(concentration);
+        }
 
         dto.setIngredients(ingredients);
         return dto;

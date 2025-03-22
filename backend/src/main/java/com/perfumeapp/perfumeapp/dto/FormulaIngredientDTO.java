@@ -9,10 +9,9 @@ public class FormulaIngredientDTO {
     private String name;
     private List<IngredientAllergenDTO> allergens = new ArrayList<>();
     private double parts;
+    private double concentration;
 
-    public Long getId() {
-        return id;
-    }
+    public Long getId() { return id; }
 
     public void setId(Long id) {
         this.id = id;
@@ -41,4 +40,8 @@ public class FormulaIngredientDTO {
     public void setParts(double parts) {
         this.parts = parts;
     }
+
+    public double getConcentration() { return concentration; }
+
+    public void setConcentration(double concentration) { this.concentration = concentration; }
 }
