@@ -1,13 +1,15 @@
 import React from 'react';
 import FormulaList from '../../components/FormulaList';
-import FormulaForm from "@/src/components/FormulaForm";
+import { PlusCircleIcon } from '@heroicons/react/16/solid';
 
 const FormulasPage: React.FC = () => {
     return (
         <div className="p-4">
             <h1 className="text-2xl font-bold">Formulas</h1>
-            <FormulaForm />
             <FormulaList />
+            <div className="pr-4 flex justify-end">
+                <PlusCircleIcon className="h-6 w-6 text-primary" />
+            </div>
         </div>
     );
 };

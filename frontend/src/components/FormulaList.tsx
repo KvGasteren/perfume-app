@@ -26,7 +26,6 @@ const FormulaList: React.FC = () => {
 
     return (
         <div className="p-4">
-            <h2 className="text-xl font-semibold mb-4">Formula List</h2>
             <table className="table-auto border-collapse border border-gray-300 w-full">
                 <thead>
                 <tr>

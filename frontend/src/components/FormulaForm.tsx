@@ -21,7 +21,7 @@ const FormulaForm: React.FC = () => {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
             />
-            <button type="submit" className="bg-blue-500 text-white p-2">
+            <button type="submit" className="bg-primary text-white p-2">
                 Add Formula
             </button>
         </form>

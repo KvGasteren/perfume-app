@@ -8,13 +8,16 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: "#209a7c", // Peacock green-blue
-        secondary: "#D97742", // Rust orange
+        primary: "#d9b165",
+        secondary: "#f6e5b4",
+        accent: "#422c1c",
+        background: "#f7f4f1",
+        highlight: "#e3ded1",
         // Optional: Add lighter/darker shades
-        "primary-light": "#7ecfbc",
-        "primary-dark": "#136B6B",
-        "secondary-light": "#E49C71",
-        "secondary-dark": "#A6522B",
+        "primary-light":"#d9b065",
+        "primary-dark": "#b38735",
+        "secondary-light":"#f6e6b4",
+        "secondary-dark":"#d3be81",
       },
     },
   },

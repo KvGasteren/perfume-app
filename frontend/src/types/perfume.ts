@@ -18,3 +18,8 @@ export interface Formula {
   name: string;
   ingredients: Ingredient[];
 }
+
+export interface ApiError {
+  error: string;
+  message: string;
+}

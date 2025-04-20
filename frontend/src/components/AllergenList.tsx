@@ -22,14 +22,13 @@ const AllergenList: React.FC = () => {
     };
 
     return (
-        <div>
-            <h2 className="text-xl font-semibold">Allergen List</h2>
+        <div className="p-4">
             <table className="table-auto border-collapse border border-gray-300 w-full">
                 <thead>
                     <tr>
                         <th className="border border-gray-300 px-4 py-2">#</th>
                         <th className="border border-gray-300 px-4 py-2">Name</th>
-                        <th className="border border-gray-300 px-4 py-2">Max Concentration ({'\u2030'})</th>
+                        <th className="border border-gray-300 px-4 py-2">Max Concentration (%)</th>
                     </tr>
                 </thead>
                 <tbody>
