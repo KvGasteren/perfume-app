@@ -26,3 +26,6 @@ export const updateAllergen = (id: number, updatedData: {name: string, maxConcen
     return API.put(`/allergens/${id}`, updatedData);
 }
 export const deleteAllergen = (id: number) => API.delete(`/allergens/${id}`)
+export const createAllergen = (allergen: { name: string }) => {
+    API.post('/allergens', allergen)
+}

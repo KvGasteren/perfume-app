@@ -13,7 +13,7 @@ const AllergenList: React.FC = () => {
 
     const fetchAllergens = async () => {
         const response = await getAllergens();
-        console.log(response.data);
+        // console.log(response.data);
         setAllergens(response.data);
     };
 
