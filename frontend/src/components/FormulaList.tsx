@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { getFormulas } from "../services/api"; // Replace with your actual API service path
+import { Formula } from "../types/perfume";
 
 const FormulaList: React.FC = () => {
-    const [formulas, setFormulas] = useState<any[]>([]);
+    const [formulas, setFormulas] = useState<Formula[]>([]);
     const router = useRouter();
 
     useEffect(() => {
