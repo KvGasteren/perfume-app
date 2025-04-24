@@ -9,9 +9,7 @@ const AllergensPage: React.FC = () => {
   const [listKey, setListKey] = useState(0)
 
   const handleAddAllergen = async (name: string) => {
-    
-    const data = { name };
-    await createAllergen(data);
+    await createAllergen({name});
     setListKey(prev => prev + 1)
   }
   return (
@@ -27,7 +25,7 @@ const AllergensPage: React.FC = () => {
       <AddAllergenModal
         isOpen={showModal}
         onClose={() => setShowModal(false)}
-        onAdd={handleAddAllergen}
+        onAdd={(name) => {return handleAddAllergen(name)}}
       />
     </div>
   )

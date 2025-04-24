@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { getIngredients } from "../services/api";
+import { Ingredient } from "../types/perfume";
+import { useRouter } from "next/router";
 
 const IngredientList: React.FC = () => {
-    const [ingredients, setIngredients] = useState<any[]>([]);
+    const [ingredients, setIngredients] = useState<Ingredient[]>([]);
+    const router = useRouter();
 
     useEffect(() => {
         fetchIngredients();
@@ -11,6 +14,10 @@ const IngredientList: React.FC = () => {
     const fetchIngredients = async () => {
         const response = await getIngredients();
         setIngredients(response.data);
+    };
+
+    const handleRowClick = (id: number) => {
+        router.push(`/ingredients/${id}`); // Navigate to the details page
     };
 
     return (
@@ -27,7 +34,7 @@ const IngredientList: React.FC = () => {
                 {ingredients.map((ingredient) => (
                     <tr key={ingredient.id} 
                         className="cursor-pointer hover:bg-gray-100"
-                        /*onClick={() => handleRowClick(ingredient.id)}*/>
+                        onClick={() => {handleRowClick(ingredient.id)}}>
                         <td className="border border-gray-300 px-4 py-2 text-center">{ingredient.id}</td>
                         <td className="border border-gray-300 px-4 py-2">{ingredient.name}</td>
                         <td className="border border-gray-300 px-4 py-2">{ingredient.allergens.length}</td>
@@ -36,7 +43,6 @@ const IngredientList: React.FC = () => {
                 </tbody>
             </table>
         </div>
-
     );
 };
 

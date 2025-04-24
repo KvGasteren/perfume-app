@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { getIngredients } from "../../services/api";
+import { Ingredient } from "@/src/types/perfume";
 
 const IngredientDetails: React.FC = () => {
     const router = useRouter();
     const { id } = router.query;
-    const [ingredient, setIngredient] = useState<any | null>(null);
+    const [ingredient, setIngredient] = useState<Ingredient | null>(null);
 
     useEffect(() => {
         if (id) {
@@ -15,7 +16,7 @@ const IngredientDetails: React.FC = () => {
 
     const fetchIngredientDetails = async (ingredientId: number) => {
         const response = await getIngredients();
-        const data = response.data.find((i: any) => i.id === ingredientId);
+        const data = response.data.find((i: Ingredient) => i.id === ingredientId);
         setIngredient(data);
     };
 
