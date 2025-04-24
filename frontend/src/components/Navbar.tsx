@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 const Navbar: React.FC = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -11,7 +12,8 @@ const Navbar: React.FC = () => {
     return (
         <header className="bg-white shadow p-4">
             <nav className="container mx-auto flex justify-between items-center">
-                <Link href={"/"}>
+                <Link href={"/"} className="flex items-center space-x-2">
+                <Image src="/logo.png" alt="Perfume Logo" width={32} height={32} />
                 <h1 className="text-xl font-bold text-primary-dark">Perfume App</h1>
                 </Link>
                 <button
@@ -39,36 +41,28 @@ const Navbar: React.FC = () => {
                     } absolute md:static top-16 left-0 w-full bg-white md:w-auto md:bg-transparent shadow-lg md:shadow-none`}
                 >
                     <li className="border-b md:border-none">
-                        <a
-                            href="/"
-                            className="block text-gray-700 hover:text-primary-dark transition-colors p-4 md:p-0"
-                        >
-                            Home
-                        </a>
-                    </li>
-                    <li className="border-b md:border-none">
-                        <a
+                        <Link
                             href="/formulas"
                             className="block text-gray-700 hover:text-primary-dark transition-colors p-4 md:p-0"
                         >
                             Formulas
-                        </a>
+                        </Link>
                     </li>
                     <li className="border-b md:border-none">
-                        <a
+                        <Link
                             href="/ingredients"
                             className="block text-gray-700 hover:text-primary-dark transition-colors p-4 md:p-0"
                         >
                             Ingredients
-                        </a>
+                        </Link>
                     </li>
                     <li>
-                        <a
+                        <Link
                             href="/allergens"
                             className="block text-gray-700 hover:text-primary-dark transition-colors p-4 md:p-0"
                         >
                             Allergens
-                        </a>
+                        </Link>
                     </li>
                 </ul>
             </nav>
