@@ -5,12 +5,15 @@ export interface Allergen {
   maxConcentration: number;
 }
 
+export interface IngredientAllergen extends Allergen {
+  concentration: number;
+}
+
+
 export interface Ingredient {
   id: number;
   name: string;
-  parts: number;
-  concentration: number;
-  allergens: Allergen[];
+  allergens: IngredientAllergen[];
 }
 
 export interface Formula {
