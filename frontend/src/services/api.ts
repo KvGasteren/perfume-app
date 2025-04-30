@@ -12,6 +12,7 @@ export const getFormulaById = (formulaId: number): Promise<Formula> => API.get(`
 
 // Ingredients
 export const getIngredients = () => API.get('/ingredients');
+export const getIngredientById = (id: number) => API.get(`/ingredients/${id}`);
 export const createIngredient = (data: Ingredient) => API.post('/ingredients', data);
 export const updateIngredient = (id: number, data: Ingredient) => API.put(`/ingredients/${id}`, data);
 export const deleteIngredient = (id: number) => API.delete(`/ingredients/${id}`);
