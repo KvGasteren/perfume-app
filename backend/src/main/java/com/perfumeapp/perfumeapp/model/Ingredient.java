@@ -14,7 +14,7 @@ public class Ingredient {
     private String name;
 
     @OneToMany(mappedBy = "ingredient", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<IngredientAllergen> ingredientAllergens;
+    private Set<IngredientAllergen> ingredientAllergens = new HashSet<>();
 
     public Long getId() {
         return id;

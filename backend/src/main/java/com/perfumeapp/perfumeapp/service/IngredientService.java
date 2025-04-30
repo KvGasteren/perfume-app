@@ -33,6 +33,11 @@ public class IngredientService {
         Ingredient ingredient = new Ingredient();
         ingredient.setName(ingredientDTO.getName());
         Ingredient savedIngredient = ingredientRepository.save(ingredient);
+        System.out.println(savedIngredient.getId());
+        for (IngredientAllergenDTO allergen: ingredientDTO.getAllergens()) {
+            System.out.println(allergen.getName());
+            addAllergen(savedIngredient.getId(), allergen);
+        }
         return convertToDTO(savedIngredient);
     }
 
