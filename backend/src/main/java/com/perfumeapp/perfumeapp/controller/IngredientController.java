@@ -1,6 +1,5 @@
 package com.perfumeapp.perfumeapp.controller;
 
-import com.perfumeapp.perfumeapp.dto.AllergenDTO;
 import com.perfumeapp.perfumeapp.dto.IngredientAllergenDTO;
 import com.perfumeapp.perfumeapp.dto.IngredientDTO;
 import com.perfumeapp.perfumeapp.service.IngredientService;
@@ -30,9 +29,9 @@ public class IngredientController {
     }
 
     @PutMapping("/{ingredientId}")
-    public ResponseEntity<IngredientDTO> updateIngredientName(
+    public ResponseEntity<IngredientDTO> updateIngredient(
             @PathVariable Long ingredientId, @RequestBody IngredientDTO ingredientDTO) {
-        return ResponseEntity.ok(ingredientService.updateIngredientName(ingredientId, ingredientDTO));
+        return ResponseEntity.ok(ingredientService.updateIngredient(ingredientId, ingredientDTO));
     }
 
     @PutMapping("/{ingredientId}/allergens/{allergenId}")

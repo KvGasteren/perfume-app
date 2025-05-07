@@ -13,7 +13,7 @@ public class Ingredient {
 
     private String name;
 
-    @OneToMany(mappedBy = "ingredient", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "ingredient", cascade = CascadeType.ALL)
     private Set<IngredientAllergen> ingredientAllergens = new HashSet<>();
 
     public Long getId() {

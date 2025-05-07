@@ -8,19 +8,25 @@ import com.perfumeapp.perfumeapp.model.Allergen;
 import com.perfumeapp.perfumeapp.model.Ingredient;
 import com.perfumeapp.perfumeapp.model.IngredientAllergen;
 import com.perfumeapp.perfumeapp.repository.AllergenRepository;
+import com.perfumeapp.perfumeapp.repository.IngredientAllergenRepository;
 import com.perfumeapp.perfumeapp.repository.IngredientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 public class IngredientService {
 
     private final IngredientRepository ingredientRepository;
+    @Autowired
+    private IngredientAllergenRepository ingredientAllergenRepository;
 
     public IngredientService(IngredientRepository ingredientRepository) {
         this.ingredientRepository = ingredientRepository;
@@ -56,13 +62,30 @@ public class IngredientService {
 
         return convertToDTO(ingredient);
     }
-    public IngredientDTO updateIngredientName(Long id, IngredientDTO ingredientDTO) {
+    @Transactional
+    public IngredientDTO updateIngredient(Long id, IngredientDTO ingredientDTO) {
         Ingredient ingredient = retrieveIngredient(id);
         ingredient.setName(ingredientDTO.getName());
+
+        // Remove all existing allergen associations
+        ingredientAllergenRepository.deleteByIngredientId(id);
+
+        // Add updated associations
+        Set<IngredientAllergen> updatedAllergens = new HashSet<>();
+        for (IngredientAllergenDTO allergenDTO : ingredientDTO.getAllergens()) {
+            IngredientAllergen ia = new IngredientAllergen();
+            ia.setIngredient(ingredient);
+            ia.setAllergen(allergenRepository.findById(allergenDTO.getId())
+                    .orElseThrow(() -> new RuntimeException("Allergen not found")));
+            ia.setConcentration(allergenDTO.getConcentration());
+            updatedAllergens.add(ingredientAllergenRepository.save(ia));
+        }
+
+        ingredient.setIngredientAllergens(updatedAllergens);
         ingredientRepository.save(ingredient);
+
         return convertToDTO(ingredient);
     }
-
 
 
     public IngredientDTO updateAllergenConcentration(Long ingredientId, Long allergenId, double concentration) {

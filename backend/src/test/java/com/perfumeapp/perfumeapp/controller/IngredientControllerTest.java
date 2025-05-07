@@ -77,12 +77,12 @@ public class IngredientControllerTest {
     }
 
     @Test
-    void testUpdateIngredientName() throws Exception {
-        when(ingredientService.updateIngredientName(eq(1L), any(IngredientDTO.class))).thenReturn(sampleIngredient);
+    void testUpdateIngredient() throws Exception {
+        when(ingredientService.updateIngredient(eq(1L), any(IngredientDTO.class))).thenReturn(sampleIngredient);
 
         mockMvc.perform(put("/api/ingredients/1").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(sampleIngredient))).andExpect(status().isOk()).andExpect(jsonPath("$.id").value(1L)).andExpect(jsonPath("$.name").value("Rose Oil"));
 
-        verify(ingredientService, times(1)).updateIngredientName(eq(1L), any(IngredientDTO.class));
+        verify(ingredientService, times(1)).updateIngredient(eq(1L), any(IngredientDTO.class));
     }
 
     @Test
