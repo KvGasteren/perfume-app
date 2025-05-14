@@ -13,7 +13,7 @@ const AllergensPage: React.FC = () => {
     setListKey(prev => prev + 1)
   }
   return (
-    <div className="p-4">
+    <div className="max-w-4xl mx-auto">
       <h1 className="text-2xl font-bold">Allergens</h1>
       <AllergenList key={listKey} />
       <div className="pr-4 flex justify-end mt-4">

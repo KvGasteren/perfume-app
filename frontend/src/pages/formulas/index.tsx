@@ -4,7 +4,7 @@ import { PlusCircleIcon } from '@heroicons/react/16/solid';
 
 const FormulasPage: React.FC = () => {
     return (
-        <div className="p-4">
+        <div className="max-w-4xl mx-auto">
             <h1 className="text-2xl font-bold">Formulas</h1>
             <FormulaList />
             <div className="pr-4 flex justify-end">

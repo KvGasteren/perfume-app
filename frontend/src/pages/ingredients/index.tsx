@@ -40,7 +40,7 @@ const IngredientsPage: React.FC = () => {
   };
 
   return (
-    <div className="p-4">
+    <div className="max-w-4xl mx-auto">
       <h1 className="text-2xl font-bold mb-4">Ingredients</h1>
 
       <IngredientList ref={listRef}/>
