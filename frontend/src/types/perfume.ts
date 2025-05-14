@@ -16,10 +16,14 @@ export interface Ingredient {
   allergens: IngredientAllergen[];
 }
 
+export interface FormulaIngredient extends Ingredient {
+  concentration: number;
+}
+
 export interface Formula {
   id: number;
   name: string;
-  ingredients: Ingredient[];
+  ingredients: FormulaIngredient[];
 }
 
 export interface ApiError {

@@ -8,7 +8,11 @@ export const getFormulas = () => API.get('/formulas');
 export const createFormula = (data: Formula) => API.post('/formulas', data);
 export const updateFormula = (id: number, data: Formula) => API.put(`/formulas/${id}`, data);
 export const deleteFormula = (id: number) => API.delete(`/formulas/${id}`);
-export const getFormulaById = (formulaId: number): Promise<Formula> => API.get(`formulas/${formulaId}`);
+export const getFormulaById = async (formulaId: number): Promise<Formula> => {
+    const response = await API.get(`formulas/${formulaId}`);
+    return response.data;
+}
+
 
 // Ingredients
 export const getIngredients = () => API.get('/ingredients');
