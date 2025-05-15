@@ -107,7 +107,7 @@ const FormulaDetails: React.FC = () => {
   );
 
   return (
-    <div className="p-4 max-w-4xl mx-auto">
+    <div className="max-w-4xl mx-auto">
       {formula ? (
         <>
           <div className="mb-4">
