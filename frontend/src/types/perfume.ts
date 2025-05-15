@@ -18,6 +18,7 @@ export interface Ingredient {
 
 export interface FormulaIngredient extends Ingredient {
   concentration: number;
+  parts: number;
 }
 
 export interface Formula {
