@@ -12,12 +12,19 @@ const FormulaDetails: React.FC = () => {
   const [allIngredients, setAllIngredients] = useState<Ingredient[]>([]);
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState("");
+  const [partInput, setPartInput] = useState<string[]>([]);
 
   useEffect(() => {
     if (typeof id === "string") {
       fetchData(Number(id));
     }
   }, [id]);
+
+  useEffect(() => {
+    if (isEditing && formula) {
+      setPartInput(formula.ingredients.map(i => i.parts.toString()));
+    }
+  }, [isEditing]);
 
   const fetchData = async (formulaId: number) => {
     const [formulaRes, ingredientsRes] = await Promise.all([
@@ -107,7 +114,7 @@ const FormulaDetails: React.FC = () => {
   );
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="p-4 max-w-4xl mx-auto">
       {formula ? (
         <>
           <div className="mb-4">
@@ -142,8 +149,16 @@ const FormulaDetails: React.FC = () => {
                       <td className="border px-4 py-2">
                         <input
                           type="number"
-                          value={ingredient.parts}
-                          onChange={(e) => updateParts(index, Number(e.target.value))}
+                          value={partInput[index] ?? ""}
+                          onChange={(e) => {
+                            const updated = [...partInput];
+                            updated[index] = e.target.value;
+                            setPartInput(updated);
+                          }}
+                          onBlur={() => {
+                            const num = parseFloat(partInput[index]);
+                            updateParts(index, isNaN(num) ? 0 : num);
+                          }}
                           className="w-full border border-gray-300 rounded px-2 py-1"
                         />
                       </td>
