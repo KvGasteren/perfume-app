@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { getFormulaById, getIngredients, updateFormula } from "../../services/api";
 import { Formula, FormulaIngredient, Allergen, Ingredient } from "@/src/types/perfume";
-import { CheckCircleIcon, PencilIcon, XCircleIcon, PlusCircleIcon, TrashIcon } from "@heroicons/react/24/outline";
+import { CheckCircleIcon, PencilSquareIcon, XCircleIcon, PlusCircleIcon, TrashIcon } from "@heroicons/react/24/outline";
 
 const FormulaDetails: React.FC = () => {
   const router = useRouter();
@@ -248,7 +248,7 @@ const FormulaDetails: React.FC = () => {
               </>
             ) : (
               <button title="Edit" onClick={() => setIsEditing(true)}>
-                <PencilIcon className="h-6 w-6 text-primary hover:text-primary/70" />
+                <PencilSquareIcon className="h-6 w-6 text-primary hover:text-primary/70" />
               </button>
             )}
           </div>
