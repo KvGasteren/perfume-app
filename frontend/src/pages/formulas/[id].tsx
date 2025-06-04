@@ -26,6 +26,11 @@ const FormulaDetails: React.FC = () => {
     }
   }, [isEditing]);
 
+  useEffect(() => {
+  console.log('formula changed!', formula);
+}, [formula]);
+
+
   const fetchData = async (formulaId: number) => {
     const [formulaRes, ingredientsRes] = await Promise.all([
       getFormulaById(formulaId),
@@ -45,12 +50,13 @@ const FormulaDetails: React.FC = () => {
   };
 
   const recalculateConcentration = (ingredients: FormulaIngredient[]) => {
+    console.log('ingredients', ingredients)
     const totalParts = ingredients.reduce((sum, i) => sum + i.parts, 0);
     const updated = ingredients.map(i => ({
       ...i,
       concentration: totalParts === 0 ? 0 : i.parts / totalParts
     }));
-    setFormula(f => f ? { ...f, ingredients: updated } : null);
+    setFormula(f => f ? {...f, ingredients: updated} : null);
   };
 
   const removeIngredient = (index: number) => {
@@ -60,6 +66,7 @@ const FormulaDetails: React.FC = () => {
   };
 
   const addIngredient = (ingredient: Ingredient, parts: number) => {
+    // adds ingredient to list, updates parts, resets add ingredient subform, sends update to backend?
     if (!formula) return;
     const alreadyIncluded = formula.ingredients.find(i => i.id === ingredient.id);
     if (alreadyIncluded) return;
@@ -72,6 +79,8 @@ const FormulaDetails: React.FC = () => {
     };
     const updated = [...formula.ingredients, newEntry];
     recalculateConcentration(updated);
+      setPartInput(prev => [...prev, parts.toString()]);
+
   };
 
   const calculateAllergenSummary = () => {
