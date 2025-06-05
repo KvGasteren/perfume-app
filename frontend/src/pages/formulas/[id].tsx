@@ -12,24 +12,12 @@ const FormulaDetails: React.FC = () => {
   const [allIngredients, setAllIngredients] = useState<Ingredient[]>([]);
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState("");
-  const [partInput, setPartInput] = useState<string[]>([]);
 
   useEffect(() => {
     if (typeof id === "string") {
       fetchData(Number(id));
     }
   }, [id]);
-
-  useEffect(() => {
-    if (isEditing && formula) {
-      setPartInput(formula.ingredients.map(i => i.parts.toString()));
-    }
-  }, [isEditing]);
-
-  useEffect(() => {
-  console.log('formula changed!', formula);
-}, [formula]);
-
 
   const fetchData = async (formulaId: number) => {
     const [formulaRes, ingredientsRes] = await Promise.all([
@@ -50,13 +38,12 @@ const FormulaDetails: React.FC = () => {
   };
 
   const recalculateConcentration = (ingredients: FormulaIngredient[]) => {
-    console.log('ingredients', ingredients)
     const totalParts = ingredients.reduce((sum, i) => sum + i.parts, 0);
     const updated = ingredients.map(i => ({
       ...i,
       concentration: totalParts === 0 ? 0 : i.parts / totalParts
     }));
-    setFormula(f => f ? {...f, ingredients: updated} : null);
+    setFormula(f => f ? { ...f, ingredients: updated } : null);
   };
 
   const removeIngredient = (index: number) => {
@@ -66,7 +53,6 @@ const FormulaDetails: React.FC = () => {
   };
 
   const addIngredient = (ingredient: Ingredient, parts: number) => {
-    // adds ingredient to list, updates parts, resets add ingredient subform, sends update to backend?
     if (!formula) return;
     const alreadyIncluded = formula.ingredients.find(i => i.id === ingredient.id);
     if (alreadyIncluded) return;
@@ -79,8 +65,6 @@ const FormulaDetails: React.FC = () => {
     };
     const updated = [...formula.ingredients, newEntry];
     recalculateConcentration(updated);
-      setPartInput(prev => [...prev, parts.toString()]);
-
   };
 
   const calculateAllergenSummary = () => {
@@ -158,14 +142,9 @@ const FormulaDetails: React.FC = () => {
                       <td className="border px-4 py-2">
                         <input
                           type="number"
-                          value={partInput[index] ?? ""}
+                          value={ingredient.parts ?? ""}
                           onChange={(e) => {
-                            const updated = [...partInput];
-                            updated[index] = e.target.value;
-                            setPartInput(updated);
-                          }}
-                          onBlur={() => {
-                            const num = parseFloat(partInput[index]);
+                            const num = parseFloat(e.target.value);
                             updateParts(index, isNaN(num) ? 0 : num);
                           }}
                           className="w-full border border-gray-300 rounded px-2 py-1"
@@ -209,7 +188,11 @@ const FormulaDetails: React.FC = () => {
                         const sel = document.getElementById("ingredientSelect") as HTMLSelectElement;
                         const val = document.getElementById("ingredientParts") as HTMLInputElement;
                         const selected = allIngredients.find(i => i.id === Number(sel.value));
-                        if (selected) addIngredient(selected, Number(val.value));
+                        if (selected) {
+                          addIngredient(selected, Number(val.value));
+                          val.value = "";
+                          sel.selectedIndex = 0;
+                        }
                       }}
                       className="text-primary hover:text-primary/70"
                       title="Add"
