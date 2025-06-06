@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { getFormulaById, getIngredients, updateFormula } from "../../services/api";
-import { Formula, FormulaIngredient, Allergen, Ingredient } from "@/src/types/perfume";
+import { Formula, FormulaIngredient, Ingredient } from "@/src/types/perfume";
 import { CheckCircleIcon, PencilSquareIcon, XCircleIcon, PlusCircleIcon, TrashIcon } from "@heroicons/react/24/outline";
 
 const FormulaDetails: React.FC = () => {
