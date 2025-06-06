@@ -46,9 +46,21 @@ public class FormulaService {
         return convertToDTO(formula);
     }
 
-    public FormulaDTO updateFormulaName(Long formulaId, FormulaDTO formulaDTO) {
+    public FormulaDTO updateFormula(Long formulaId, FormulaDTO formulaDTO) {
         Formula formula = retrieveFormula(formulaId);
         formula.setName(formulaDTO.getName());
+        formula.getFormulaIngredients().clear();
+
+        for (FormulaIngredientDTO dto : formulaDTO.getIngredients()) {
+            Ingredient ingredient = ingredientRepository.findById(dto.getId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Ingredient not found"));
+
+            FormulaIngredient fi = new FormulaIngredient();
+            fi.setFormula(formula);
+            fi.setIngredient(ingredient);
+            fi.setConcentration(dto.getConcentration());
+            formula.getFormulaIngredients().add(fi);
+        }
         formulaRepository.save(formula);
         return convertToDTO(formula);
     }
