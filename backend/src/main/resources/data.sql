@@ -29,7 +29,7 @@ INSERT INTO ingredient_allergen (id, ingredient_id, allergen_id, concentration) 
 (4, 3, 3, 0.01); -- Lemon Extract contains Geraniol at 0.01 concentration
 
 -- Insert FormulaIngredient relationships with concentration information
-INSERT INTO formula_ingredient (id, formula_id, ingredient_id, concentration) VALUES
+INSERT INTO formula_ingredient (id, formula_id, ingredient_id, parts)VALUES
 (1, 1, 3, 0.5), -- Fresh Citrus formula contains Lemon Extract at 0.5 concentration
 (2, 1, 2, 0.3), -- Fresh Citrus formula contains Lavender Oil at 0.3 concentration
 (3, 2, 1, 0.6), -- Floral Bouquet formula contains Rose Oil at 0.6 concentration

@@ -68,22 +68,22 @@ const FormulaDetails: React.FC = () => {
   };
 
   const calculateAllergenSummary = () => {
-    const allergens: { [key: string]: { totalConcentration: number; maxConcentration: number } } = {};
+    const allergens: { [key: string]: { totalConcentrationInFormula: number; maxConcentration: number } } = {};
     formula?.ingredients?.forEach((ingredient) => {
       ingredient.allergens.forEach((allergen) => {
         if (!allergens[allergen.name]) {
           allergens[allergen.name] = {
-            totalConcentration: 0,
+            totalConcentrationInFormula: 0,
             maxConcentration: allergen.maxConcentration * ingredient.concentration,
           };
         }
-        allergens[allergen.name].totalConcentration += allergen.concentration * ingredient.concentration;
+        allergens[allergen.name].totalConcentrationInFormula += allergen.concentration * ingredient.concentration;
       });
     });
     return Object.entries(allergens).map(([name, data]) => ({
       name,
-      totalConcentration: data.totalConcentration.toFixed(2),
-      maxConcentration: data.maxConcentration.toFixed(2),
+      totalConcentrationInFormula: data.totalConcentrationInFormula.toFixed(2),
+      maxAllowedConcentration: data.maxConcentration.toFixed(2),
     }));
   };
 
@@ -105,6 +105,12 @@ const FormulaDetails: React.FC = () => {
   const availableIngredients = allIngredients.filter(
     (i) => !formula?.ingredients.find(fi => fi.id === i.id)
   );
+
+  const allergens = isEditing
+    ? calculateAllergenSummary()
+    : formula?.allergenSummary || [];
+
+  console.log(formula);
 
   return (
     <div className="p-4 max-w-4xl mx-auto">
@@ -216,16 +222,15 @@ const FormulaDetails: React.FC = () => {
                 </tr>
               </thead>
               <tbody>
-                {calculateAllergenSummary().map((allergen) => (
+                {allergens.map((allergen) => (
                   <tr key={allergen.name}>
                     <td className="border px-4 py-2">{allergen.name}</td>
-                    <td className="border px-4 py-2">{allergen.totalConcentration}</td>
-                    <td className="border px-4 py-2">{allergen.maxConcentration}</td>
+                    <td className="border px-4 py-2">{Number(allergen.totalConcentrationInFormula).toFixed(2)}</td>
+                    <td className="border px-4 py-2">{Number(allergen.maxAllowedConcentration).toFixed(2)}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
-            <p className="text-xs text-red-500 mt-2">NB: Total concentration is currently calculated in the frontend.</p>
           </div>
 
           <div className="flex justify-end gap-4 mt-4">

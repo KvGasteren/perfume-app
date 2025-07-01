@@ -21,10 +21,17 @@ export interface FormulaIngredient extends Ingredient {
   parts: number;
 }
 
+export interface AllergenSummary {
+  name: string,
+  totalConcentrationInFormula: number;
+  maxAllowedConcentration: number;
+}
+
 export interface Formula {
   id: number;
   name: string;
   ingredients: FormulaIngredient[];
+  allergenSummary?: AllergenSummary[];
 }
 
 export interface ApiError {

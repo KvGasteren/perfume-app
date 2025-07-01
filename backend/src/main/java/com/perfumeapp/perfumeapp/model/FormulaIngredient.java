@@ -2,7 +2,7 @@ package com.perfumeapp.perfumeapp.model;
 
 import jakarta.persistence.*;
 
-@Entity
+@Entity(name = "formula_ingredient")
 public class FormulaIngredient {
 
     @Id
@@ -17,7 +17,8 @@ public class FormulaIngredient {
     @JoinColumn(name = "ingredient_id", nullable = false)
     private Ingredient ingredient;
 
-    private double concentration;
+    @Column(name = "parts", nullable = false)
+    private double parts;
 
     public Long getId() {
         return id;
@@ -43,11 +44,11 @@ public class FormulaIngredient {
         this.formula = formula;
     }
 
-    public double getConcentration() {
-        return concentration;
+    public double getParts() {
+        return parts;
     }
 
-    public void setConcentration(double concentration) {
-        this.concentration = concentration;
+    public void setParts(double concentration) {
+        this.parts = concentration;
     }
 }

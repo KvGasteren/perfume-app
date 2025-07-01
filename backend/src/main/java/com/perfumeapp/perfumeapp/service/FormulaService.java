@@ -10,7 +10,10 @@ import com.perfumeapp.perfumeapp.repository.IngredientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -58,14 +61,14 @@ public class FormulaService {
             FormulaIngredient fi = new FormulaIngredient();
             fi.setFormula(formula);
             fi.setIngredient(ingredient);
-            fi.setConcentration(dto.getConcentration());
+            fi.setParts(dto.getParts());
             formula.getFormulaIngredients().add(fi);
         }
         formulaRepository.save(formula);
         return convertToDTO(formula);
     }
 
-    public FormulaDTO updateIngredientConcentration(Long formulaId, Long ingredientId, double concentration) {
+    public FormulaDTO updateIngredientParts(Long formulaId, Long ingredientId, double parts) {
         Formula formula = retrieveFormula(formulaId);
 
         FormulaIngredient formulaIngredient = formula.getFormulaIngredients().stream()
@@ -73,7 +76,7 @@ public class FormulaService {
                 .findFirst()
                 .orElseThrow(() -> new ResourceNotFoundException("Ingredient not associated with the formula"));
 
-        formulaIngredient.setConcentration(concentration);
+        formulaIngredient.setParts(concentration);
         formulaRepository.save(formula);
 
         return convertToDTO(formula);
@@ -113,7 +116,7 @@ public class FormulaService {
                     FormulaIngredientDTO formulaIngredientDTO = new FormulaIngredientDTO();
                     formulaIngredientDTO.setId(ingredient.getId());
                     formulaIngredientDTO.setName(ingredient.getName());
-                    formulaIngredientDTO.setParts(fi.getConcentration());
+                    formulaIngredientDTO.setParts(fi.getParts());
 
                     List<IngredientAllergenDTO> ingredientAllergenDTOS = ingredient.getIngredientAllergens().stream()
                             .map(ia -> {
@@ -139,7 +142,30 @@ public class FormulaService {
             double concentration = totalParts > 0 ? ingredientDTO.getParts() / totalParts : 0.0;
             ingredientDTO.setConcentration(concentration);
         }
+        Map<String, FormulaAllergenDTO> allergenMap = new HashMap<>();
 
+        for (FormulaIngredientDTO ingredientDTO : ingredients) {
+            for (IngredientAllergenDTO allergenDTO : ingredientDTO.getAllergens()) {
+                double contribution = allergenDTO.getConcentration() * ingredientDTO.getConcentration();
+                double max = allergenDTO.getConcentration() * ingredientDTO.getConcentration(); // assuming max is same per ingredient, adapt if needed
+
+                allergenMap.compute(allergenDTO.getName(), (key, existing) -> {
+                    if (existing == null) {
+                        FormulaAllergenDTO newDto = new FormulaAllergenDTO();
+                        newDto.setName(key);
+                        newDto.setTotalConcentrationInFormula(contribution);
+                        newDto.setMaxAllowedConcentration(max);
+                        return newDto;
+                    } else {
+                        existing.setTotalConcentrationInFormula(existing.getTotalConcentrationInFormula() + contribution);
+                        // If needed, update max logic (e.g. keep highest across ingredients)
+                        return existing;
+                    }
+                });
+            }
+        }
+
+        dto.setAllergenSummary(new ArrayList<>(allergenMap.values()));
         dto.setIngredients(ingredients);
         return dto;
     }
