@@ -37,11 +37,11 @@ public class FormulaController {
     }
 
     @PutMapping("/{formulaId}/ingredients/{ingredientId}")
-    public ResponseEntity<FormulaDTO> updateIngredientConcentration(
+    public ResponseEntity<FormulaDTO> updateIngredientParts(
             @PathVariable Long formulaId,
             @PathVariable Long ingredientId,
             @RequestBody double concentration) {
-        return ResponseEntity.ok(formulaService.updateIngredientConcentration(
+        return ResponseEntity.ok(formulaService.updateIngredientParts(
                 formulaId, ingredientId, concentration));
     }
 

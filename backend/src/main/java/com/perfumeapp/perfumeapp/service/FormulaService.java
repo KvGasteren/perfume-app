@@ -76,7 +76,7 @@ public class FormulaService {
                 .findFirst()
                 .orElseThrow(() -> new ResourceNotFoundException("Ingredient not associated with the formula"));
 
-        formulaIngredient.setParts(concentration);
+        formulaIngredient.setParts(parts);
         formulaRepository.save(formula);
 
         return convertToDTO(formula);

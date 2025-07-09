@@ -96,7 +96,7 @@ class FormulaControllerTest {
 
     @Test
     void testUpdateIngredientConcentration() throws Exception {
-        when(formulaService.updateIngredientConcentration(eq(1L), eq(1L), eq(0.7))).thenReturn(sampleFormula);
+        when(formulaService.updateIngredientPartsn(eq(1L), eq(1L), eq(0.7))).thenReturn(sampleFormula);
 
         mockMvc.perform(put("/api/formulas/1/ingredients/1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -105,7 +105,7 @@ class FormulaControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id").value(1L));
 
-        verify(formulaService, times(1)).updateIngredientConcentration(eq(1L), eq(1L), eq(0.7));
+        verify(formulaService, times(1)).updateIngredientParts(eq(1L), eq(1L), eq(0.7));
     }
 
     @Test
